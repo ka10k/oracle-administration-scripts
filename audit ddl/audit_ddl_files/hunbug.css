@@ -1,0 +1,470 @@
+/*******************/
+/* Main Containers */
+
+
+body {
+  margin: 0px;
+  padding: 0px;
+  background: white;
+  font-family: 'Trebuchet MS',Helvetica,Tahoma,Verdana,Arial;
+  font-size: 12px;
+}
+
+form {
+  margin: 0px;
+  padding: 0px;
+}
+
+input {
+  font-size: 10px;
+  margin: 0px;
+  padding: 0px;
+}
+  
+img {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+  
+td {
+  vertical-align: top;
+}
+
+
+/************/
+/* Page Ids */
+
+
+#body {
+  background: url(/hunbug/img/stripe.png);
+  background-attachment: fixed;
+}
+
+#body, #maintable, #hunbugcomment, #store {
+  font-family: 'Trebuchet MS',Helvetica,Tahoma,Verdana,Arial;
+  font-size: 12px;
+}
+
+#body, #maintable {
+  width: 100%;
+  overflow: hidden;
+}
+
+#header h1 {
+  font-size: 38px;
+  padding: 20px 0 0 20px;
+  margin: 0;
+}
+
+#header h2 {
+  padding: 0 0 20px 20px;
+  margin: 0;
+  font-style: italic;
+  font-size: 16px;
+}
+  
+#footer {
+  position: relative;
+  text-align: center;
+  height: 100px;
+  background: url(/hunbug/img/grass.gif);
+  overflow: hidden;
+}
+
+#footer p {
+  margin: 0 auto;
+  position: relative;
+  top: 70px;
+  font-weight: bold;
+  color: white;
+}
+  
+#footer img {
+  position: absolute;
+  top:10px; right: 30px;
+}
+  
+#footer iframe { display: none }
+
+.nodisplay { display: none }
+
+
+/*************/
+/* Side Menu */
+
+
+#menu {
+  width: 150px;
+  text-align: center;
+}
+
+#menulower {
+  text-align: center;
+  vertical-align: bottom;
+}
+
+.menupanel {
+  margin: 0px 5px 10px 5px;
+  padding: 10px;
+  background-color: rgb(214,222,231);
+  color: steelblue;
+  border: white solid 2px;
+  text-align: left;
+}
+
+.menuheader {
+  text-align: left;
+  font-weight: bold;
+  width: 140px;
+}
+
+.menusegment {
+  width: 100%;
+  text-align: left;
+  padding: 5px 0px;
+  line-height: 1.5em;
+}
+
+.menusegment a:visited, .menusegment a:link, .docolink {
+  text-decoration: none;
+  color: black;
+}
+
+.blacklink, .menupanel input {
+  text-decoration: none;
+  color: black;
+  padding-left: 10px;
+  width: 135px;
+}  
+
+.menupanel a:hover {
+  text-decoration: underline;
+  color: #800000;
+}
+
+.menusegment a:active {
+  text-decoration: underline;
+  color: green;
+}
+
+#menubookmarks img {
+  margin-top: 2px;
+  }
+
+#translate {
+  margin: 40px 25px;
+}
+
+
+/************/
+/* Top Menu */
+
+#pagefold {
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 375px;
+  height: 100px;
+  background: url(/hunbug/img/pagefold.gif);
+  text-align: right;
+}
+
+#pagefold div {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+/************/
+/* End Menu */
+
+#endoptions {
+  padding-top: 20px;
+  vertical-align: middle;
+  position: relative;
+}
+
+#endoptions a {
+  text-decoration: none;
+  color: black;
+  padding-left: 10px;
+}
+
+#endoptions a:hover {
+  text-decoration: underline;
+}
+
+.rating {
+  position: absolute;
+  display: inline;
+  top: 20px; right: 20px;
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-right: 20px;
+  vertical-align: middle;
+}
+
+.rating span, .rating img {
+  vertical-align: middle;
+}
+
+/*************/
+/* Doco Menu */
+
+
+.docos {
+  padding: 20px 0px 20px 0px;
+  border-bottom: solid 1px #000080;
+}
+
+.docoshead {
+  font-weight:bold;
+}
+
+.docostitle {
+  font-size: 1.5em;
+}
+  
+/****************/
+/* Shadow Areas */
+
+
+.shadow {
+  background: lightsteelblue;
+  position: relative;
+}
+
+.content {
+  position: relative;
+  top: -7px; left: -7px;
+  background: white;
+}
+
+#dococontent {
+  padding: 10px;
+  line-height: 1.75em;
+  overflow: hidden;
+}
+  
+#docoshadow {
+  margin: 10px 20px 20px 10px;
+}
+
+.banner {
+  width: 100%;
+  text-align: center;
+  position: relative;
+  margin: 0 auto;
+}
+  
+#skyscrapershadow {
+  margin: 20px auto;
+}
+
+#skyscrapershadow, #skyscraperad {
+  height: 600px; width: 120px;
+}
+
+
+/***********/
+/* Article */
+
+
+#articlebody {
+    text-align: left;
+    margin: 10px;
+    color: black;
+    background-color: white;
+    }
+
+.articlemainhead {
+    font-size: 28px;
+    font-weight: bold;
+    }
+
+#articlebody h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: bold;
+    }
+
+#articlebody h2 {
+    font-size: 20px;
+    font-weight: bold;
+    }
+
+#articlebody h3 {
+    font-size: 18px;
+    font-weight: bold;
+    font-style: italic;
+    }
+
+#articlebody h6 {
+    margin: 0;
+    font-size: 10px;
+    font-weight: normal;
+    }
+
+.articlesubhead {
+    font-size: 10px;
+    }
+
+.articlesectionhead1 {
+    font-size: 20px;
+    font-weight: bold;
+    }
+
+.articlesection {
+    border: solid black;
+    border-width: 1px 0px 0px 0px;
+    margin: 10px;
+    padding: 10px;
+    font-size: 14px;
+    }
+
+.articlecodeexample {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px dashed black;
+    color: black;
+    background-color: whitesmoke;
+    font-family: 'Lucida Console',Courier,Monospaced;
+    font-size: 0.75em;
+    line-height: 1.25em;
+    } 
+
+.articlecodetext, #articlebody pre {
+    font-family: 'Lucida Console',Courier,Monospaced;
+    } 
+
+
+/***********/
+/* Comment */
+
+
+#hunbugcomment {
+  background-color: rgb(214,222,231);
+  color: black;
+  border: solid black 2px;
+  display: none;
+  line-height: 2em;
+  padding: 10px;
+  position: absolute;
+  text-align: left;
+  z-index: 99;
+}
+
+#hunbugcomment label {
+  font-weight: bold;
+}
+
+#hunbugcomment input, #hunbugcomment textarea {
+  font-size: 14px;
+  }
+
+#commentcount {
+  background: rgb(214,222,231);
+  border: 0;
+}
+
+#captchaimage {
+  height: 40px;
+  width: 120px;
+  }
+
+
+/*****************/
+/* Google Search */
+
+#googlesearch {
+  padding-top: 20px
+}
+
+
+/**************/
+/* Ringbinder */
+
+
+.ringbinder {
+  position: relative;
+  width: 775px;
+  height: 325px;
+  overflow: hidden;
+  background-image: url(/hunbug/img/ringbinder.gif);
+  text-align: center;
+  margin: 0 auto;
+}
+
+.ringbinderpage {
+  position: absolute;
+  width: 336px;
+  height: 280px;
+  top: 20px;
+}
+
+.ringbinderpageleft {
+  left: 33px;
+}
+
+.ringbinderpageright {
+  right: 32px;
+}
+
+
+/************/
+/* Pin Note */
+
+.pinnote {
+  position: relative;
+  background-image: url('/hunbug/img/pinnote.gif');
+  height: 378px;
+  width: 428px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+.pinnotead {
+  position: absolute;
+  top: 40px;
+  left: 50px;
+  width: 336px;
+  height: 280px;
+}
+  
+
+/*********/
+/* Store */
+
+#store {
+  position: absolute;
+  top: 50px;
+  left: 10px;
+  width: 825px;
+  display: none;
+  font-weight: bold;
+  z-index: 90;
+}
+
+#storeheader {
+  background: darkblue;
+  color: white;
+  font-weight: bold;
+  position: relative;
+  padding: 5px;
+}
+
+#storeheader input {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+#storecontents {
+  overflow: scroll;
+  width: 825px;
+  height: 500px;
+}
+
+/***********/

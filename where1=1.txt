@@ -1,0 +1,11 @@
+Essentially, where 1 = 1 means no where clause. It will always be true, so all records will be returned.
+
+ex1:(вернет все записи)
+create table emp1 as select * from emp where 1=1;
+
+This statement creates a table called 'emp1' with structure and data similar to table 'emp'.Because the where condition(1=1) is 'TRUE' for all rows of emp the select statement select all rows of 'emp' table.i.e This statement copies both table structure and data of 'emp' table into emp1 table.
+
+ex2: (не вернет ничего)
+create table emp1 as select * from emp where 1=2;
+
+This statement creates a table called 'emp1' with only structure similar to table 'emp'.It does not select any row of 'emp' table , Because the where condition(1=2) is 'FALSE' for all rows of emp TABLE.i.e this statement copies only structure of emp table into emp1 table.

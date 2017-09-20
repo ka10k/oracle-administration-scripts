@@ -1,0 +1,1 @@
+select * from dba_audit_session where RETURNCODE=1017

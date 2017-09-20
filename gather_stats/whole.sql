@@ -1,0 +1,1 @@
+exec DBMS_STATS.gather_database_stats(estimate_percent => dbms_stats.auto_sample_size, cascade => TRUE, granularity => 'ALL', DEGREE => 8);

@@ -1,0 +1,1 @@
+ select * from V$TEMPSEG_USAGE order by blocks desc;

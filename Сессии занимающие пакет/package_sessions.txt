@@ -1,0 +1,62 @@
+------------Джобы закрытия которые держат пакет---------
+select /*+ rule*/ 'alter system kill session '''||s.sid||','||s.SERIAL#||''' immediate;', s.*
+
+  from v$session s
+
+  where status = 'ACTIVE'
+
+    and audsid <> userenv('SESSIONID')
+
+    and sid in
+
+    ( select sid from v$access
+
+        where owner  = 'SIP'
+
+          and type   = 'PACKAGE'
+
+          and object = 'CM_LICENSE'
+
+    )
+
+AND SID IN (
+
+SELECT SID
+
+FROM Dba_Jobs_Running jr
+
+     ,dba_jobs j
+
+  WHERE j.JOB=jr.job
+
+    AND lower(j.WHAT) LIKE '%month%'
+
+)   
+
+    ;
+
+----------------------Сессии которые держат пакет--------------
+
+select /*+ rule*/ 'alter system kill session '''||s.sid||','||s.SERIAL#||''' immediate;', s.*
+
+  from v$session s
+
+  where status = 'ACTIVE'
+
+    and audsid <> userenv('SESSIONID')
+
+    and sid in
+
+    ( select sid from v$access
+
+        where owner  = 'SIP_W'
+
+          and type   = 'PACKAGE'
+
+          and object = 'CM_LICENSE'
+
+    );
+
+-------------------------------
+
+

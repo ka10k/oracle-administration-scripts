@@ -1,0 +1,2 @@
+--show parameters sec_case_sensitive_logon
+--alter system set sec_case_sensitive_logon=FALSE scope=both;

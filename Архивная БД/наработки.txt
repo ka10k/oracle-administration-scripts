@@ -1,0 +1,80 @@
+
+--просмотр занятого места под архивные логи архивного СТАРТ-IP
+source /home/oracle/.envCRS && asmcmd du +SIP_ARCH/SIPARCH/ARCHIVELOG
+
+
+---сбор статистики по схеме
+BEGIN
+  SYS.DBMS_STATS.GATHER_SCHEMA_STATS (
+     OwnName           => 'SIP_SR_OLD'
+    ,Granularity       => 'ALL'
+    ,Options           => 'GATHER'
+    ,Gather_Temp       => FALSE
+    ,Estimate_Percent  => NULL
+    ,Method_Opt        => 'FOR ALL COLUMNS SIZE 1'
+    ,Degree            => 6
+    ,Cascade           => TRUE
+    ,No_Invalidate     => FALSE);
+END;
+/
+
+
+
+--рабочий скрипт КАзани
+[oracle@sip-tst2 scripts]$ cat imp.sh 
+#!/bin/bash
+source /home/oracle/.envSIPARCH
+impdp sip_kz/sip_kz DIRECTORY=export NETWORK_LINK=SIPKZ REMAP_SCHEMA=SIP_W:SIP_KZ tables=SIP_W.TB_WTMPS_SESSIONS_ARCHIVE:PART$(date +%Y_%m -d "$DATE - 5 months"),SIP_W.TB_WTMPS_ARCHIVE:PART$(date +%Y_%m -d "$DATE - 5 months"),SIP_W.TB_WTMPS_SESSION_CHARGES:PART$(date +%Y_%m -d "$DATE - 5 months"),SIP_W.TB_SERVICES:PART$(date +%Y_%m -d "$DATE - 14 months") content=data_only PARALLEL=6 logfile=$(date +%Y_%m).log
+rman << EOF
+connect target /
+connect catalog rman112/rman@rcat
+crosscheck archivelog all;
+delete noprompt archivelog all;
+quit
+EOF
+sqlplus / as sysdba << EOF
+whenever sqlerror exit sql.sqlcode;
+set echo off
+set heading off
+@/home/oracle/scripts/gather_arch.sql
+exit;
+EOF
+
+
+--скрипт для будущей автоматизации
+[oracle@sip-tst2 scripts]$ cat example1.sh 
+#!/bin/bash
+. /home/oracle/.envSIPARCH
+function clear {
+rman << EOF
+connect target /
+connect catalog rman112/rman@rcat
+crosscheck archivelog all;
+delete noprompt archivelog all;
+quit
+EOF
+}
+
+function gatherst {
+sqlplus / as sysdba << EOF
+whenever sqlerror exit sql.sqlcode;
+set echo off
+set heading off
+@/db/sip_arch/gather_arch.sql
+exit;
+EOF
+}
+
+function test {
+echo test
+}
+
+for databaseName in SIP_KZ SIP_SR SIP_NN SIP_UL; do
+  echo $databaseName
+  test
+  clear
+  done 
+  
+  
+  
+

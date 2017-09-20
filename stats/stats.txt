@@ -1,0 +1,94 @@
+set serveroutput on;
+declare
+part varchar2(11);
+dttm varchar2(19);
+owner varchar2(50);
+tablename varchar(50);
+
+BEGIN
+
+dbms_output.put_line('Started at: '||to_char(sysdate,'DD.MM.YYYY HH24:MI:SS'));
+   
+SELECT 'PART' || TO_CHAR(SYSDATE-1, 'YYYY_MM') into part from dual;
+
+for t in(select distinct table_owner,table_name from dba_tab_partitions where partition_name like 'PART%' and TABLE_NAME not like 'BIN%')
+
+    loop
+    DBMS_STATS.LOCK_TABLE_STATS (ownname=>t.table_owner ,tabname=>t.table_name);
+    dbms_output.put_line('LOCK_TABLE_STATS: ' || t.table_owner||'.'||t.table_name);
+    end loop;
+    
+
+dbms_output.put_line('Not partitioned tables analyzing started: '||to_char(sysdate,'DD.MM.YYYY HH24:MI:SS'));    
+DBMS_STATS.gather_database_stats(estimate_percent => dbms_stats.auto_sample_size, cascade => TRUE, granularity => 'ALL', DEGREE => 4);
+
+
+dbms_output.put_line('Partitioned tables analyzing started: '||to_char(sysdate,'DD.MM.YYYY HH24:MI:SS'));
+
+for t in(select distinct table_owner,table_name from dba_tab_partitions where partition_name like 'PART%' and TABLE_NAME not like 'BIN%')
+
+    loop
+    
+    begin
+    DBMS_STATS.UNLOCK_TABLE_STATS (ownname=>t.table_owner ,tabname=>t.table_name);
+    dbms_output.put_line('UNLOCK_TABLE_STATS: ' || t.table_owner||'.'||t.table_name);
+    DBMS_STATS.GATHER_TABLE_STATS(ownname => t.table_owner, tabname => t.table_name, partname => part, cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>4);
+    DBMS_STATS.GATHER_TABLE_STATS(ownname => t.table_owner, tabname => t.table_name, partname => 'PART_MAXVALUE', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION');
+        exception
+        when others then dbms_output.put_line(SQLCODE ||' '|| SUBSTR(SQLERRM, 1, 64) ||' '|| t.table_owner ||'.'||t.table_name);
+        
+    end;   
+    end loop;
+
+-----index stats-----
+dbms_output.put_line('Indexes analyzing started: '||to_char(sysdate,'DD.MM.YYYY HH24:MI:SS'));
+
+for t in(select distinct index_owner,index_name from dba_ind_partitions where partition_name like 'PART%')
+
+    loop
+    
+    begin
+    DBMS_STATS.GATHER_INDEX_STATS(ownname => t.index_owner, indname => t.index_name, partname => part, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>4);
+    DBMS_STATS.GATHER_INDEX_STATS(ownname => t.index_owner, indname => t.index_name, partname => 'PART_MAXVALUE', ESTIMATE_PERCENT => NULL, granularity => 'PARTITION');
+        exception
+        when others then dbms_output.put_line(SQLCODE ||' '|| SUBSTR(SQLERRM, 1, 64) ||' '|| t.index_owner ||'.'||t.index_name);
+        
+    end;   
+    end loop;
+---------------------    
+    
+    
+
+dbms_output.put_line('Ended at: '||to_char(sysdate,'DD.MM.YYYY HH24:MI:SS'));
+
+END;
+/
+
+
+
+cat index_stats.sql 
+set serveroutput on;
+
+
+BEGIN
+
+dbms_output.put_line('Indexes analyzing started: '||to_char(sysdate,'DD.MM.YYYY HH24:MI:SS'));
+for t in(select distinct index_owner,index_name from dba_ind_partitions where partition_name like 'PART%' and last_analyzed < (sysdate-2))
+
+    loop
+    begin
+    --DBMS_STATS.GATHER_INDEX_STATS(ownname => t.index_owner, indname => t.index_name, partname => part, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+    --DBMS_STATS.GATHER_INDEX_STATS(ownname => t.index_owner, indname => t.index_name, partname => 'PART_MAXVALUE', ESTIMATE_PERCENT => NULL, granularity => 'PARTITION');
+    DBMS_STATS.GATHER_INDEX_STATS (OwnName=>  t.index_owner ,IndName=> t.index_name ,Estimate_Percent => NULL ,Degree => 8 ,No_Invalidate => FALSE);
+        exception
+        when others then dbms_output.put_line(SQLCODE ||' '|| SUBSTR(SQLERRM, 1, 64) ||' '|| t.index_owner ||'.'||t.index_name);
+        
+    end;   
+    end loop;
+
+dbms_output.put_line('Indexes analyzing ended: '||to_char(sysdate,'DD.MM.YYYY HH24:MI:SS'));
+end;
+/
+
+
+

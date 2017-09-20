@@ -1,0 +1,19 @@
+connect target sys/odf5skfm@volgasd
+run {
+ 
+ALLOCATE CHANNEL d1 DEVICE TYPE DISK;
+backup incremental level 0
+ format 'D:\DUMP\volgasd_db_backup'
+ database;
+sql 'alter system archive log current';
+backup
+ format 'D:\DUMP\volgasd_arch_backup'
+ archivelog all
+ delete input;
+backup
+ format 'D:\DUMP\volgasd_cf_backup'
+ current controlfile;
+
+}
+
+Exit

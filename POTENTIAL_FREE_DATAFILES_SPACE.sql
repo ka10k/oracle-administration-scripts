@@ -1,0 +1,2 @@
+--describe dba_data_files;
+select tablespace_name,round(sum(maxbytes/1024/1024/1024),2) Maxsize_GB,round(sum(USER_BYTES/1024/1024/1024),2) Used_GB, (round(sum(maxbytes/1024/1024/1024),2)-round(sum(USER_BYTES/1024/1024/1024),2)) POTENTIAL_FREE_GB from dba_data_files group by tablespace_name order by POTENTIAL_FREE_GB desc;

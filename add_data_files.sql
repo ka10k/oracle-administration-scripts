@@ -1,0 +1,8 @@
+--select * from dba_data_files;
+--INDX
+ALTER TABLESPACE "INDX" ADD DATAFILE '/db/kz_sip/db1/index06.dbf' SIZE 32760M REUSE;
+ALTER TABLESPACE "INDX" ADD DATAFILE '/db/kz_sip/db1/index07.dbf' SIZE 32760M REUSE;
+
+--USERS
+ALTER TABLESPACE "USERS" ADD DATAFILE '/db/kz_sip/db1/users07.dbf' SIZE 32760M REUSE;
+ALTER TABLESPACE "USERS" ADD DATAFILE '/db/kz_sip/db1/users08.dbf' SIZE 32760M REUSE;

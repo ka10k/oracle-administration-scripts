@@ -1,0 +1,477 @@
+﻿----------------------------------------------------------------------------
+SQL Stmnt Number: 1
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 9335849 Buffer Gets : 430466979
+First Load Time: 2017-07-04/19:00:00
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN  -- Реестр дебиторов (Жестков А.В.) declare  p_bi
+.....d number:=billper.getprevbill(billper.get_curr_billid,1);  begin    ALEX
+....._DEB_FILIAL_PKG.insert_deb(p_bid);   ALEX_DEB_FILIAL_PKG.insert_inst_ava
+.....ns(p_bid);   ALEX_DEB_FILIAL_PKG.insert_lock_ip(p_bid);   ALEX_DEB_FILIA
+.....L_PKG.insert_lock_ota(p_bid);   ALEX_DEB_FILIAL_PKG.insert_check(p_bid);
+.....  end;  :mydate := next_date; IF broken THEN :b := 1; ELSE :b := 0; END
+.....IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 2
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 4759658 Buffer Gets : 192968558
+First Load Time: 2017-07-05/01:00:04
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN NIK_ABON_PDZ(to_char(trunc(sysdate,'MM')-1,'YYYYM
+.....M')); :mydate := next_date; IF broken THEN :b := 1; ELSE :b := 0; END IF
+.....; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 3
+----------------------------------------------------------------------------
+Executions : 2
+Disk Reads : 8948200 Buffer Gets : 284993610
+First Load Time: 2017-07-04/19:31:25
+SQL Statement-------->
+.....SELECT DEB.USER_ID ,US.ACCOUNT ,(SELECT CN.NMB FROM ALEX_CN CN WHERE CN.
+.....USER_ID=DEB.USER_ID) NMB ,US.NAME ,US.INN ,US.ISCORP ,(SELECT UT.COD FRO
+.....M T_USER_TYPE_REF UT WHERE US.USER_TYPE_ID = UT.USER_TYPE_ID) UT_COD ,(S
+.....ELECT UT.NAME FROM T_USER_TYPE_REF UT WHERE US.USER_TYPE_ID = UT.USER_TY
+.....PE_ID) UT_NAME ,P_DOC.GET_UDOPINFO_SOBJ(DEB.USER_ID, 1999994, SYSDATE) C
+.....ONT_TEL ,P_DOC.GET_UDOPINFO_SOBJ(DEB.USER_ID, 1999991, SYSDATE) CONT_EMA
+.....IL ,(SELECT CN.METOD FROM ALEX_CN CN WHERE CN.USER_ID=DEB.USER_ID) METOD
+..... ,DEB.TOTAL ,DEB.DEBT_0_1+DEB.DEBT_1_2+DEB.DEBT_2_3+DEB.DEBT_3_4+DEB.DEB
+.....T_4_5+DEB.DEBT_5_6+DEB.DEBT_6_12+DEB.DEBT_12_24+DEB.DEBT_24_36+DEB.DEBT_
+.....36 AS TDZ ,LAST_DAY(TO_DATE(TO_CHAR( (SELECT MIN (APPBID) FROM CPA_DEBT_
+.....CACHE DC WHERE DC.USER_ID = DEB.USER_ID AND VND_ID IN (525862019,2199239
+.....,525919986,70409345,4375276,200,70410991,10000000000000126053,1000000000
+.....0000126055,10000000000000126054) AND CURBID = :B1 AND APPBID <> 0 AND IN
+.....STDEBT <> 0 )), 'YYYYMM' )) DATE_OF_FORMATION_ODS ,DEB.PDZ ,DEB.
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 4
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 3664855 Buffer Gets : 19215839
+First Load Time: 2017-07-05/09:23:28
+SQL Statement-------->
+..... select IsVpc,IsOtsev,krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,   sum(P
+.....aySumm), sum(PeniSumm), count(pay_id) from (select pay_id,IsVpc,IsOtsev,
+.....krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,    sum(PaySumm) as PaySumm, s
+.....um(PeniSumm) as PeniSumm  from  (select IsVpc, IsOtsev,     PayDocName a
+.....s krit1,     null as krit2,     null as krit3,     PayDocName as kritfs1
+.....,     null as kritfs2,     null as kritfs3,     PaySumm, nvl(PeniSumm, 0
+.....) as PeniSumm, pay_id   from (( ( (     select /*+ ORDERED INDEX(TB OT2K
+.....VINT#REPORT_ID) INDEX(CP IDX_CPA_PAYMENT#BID) INDEX(TS SALDO#USER#BILLIN
+.....G) */         pm.payment_id as pay_id, 0 as c_mode, pm.pay_date as PayDa
+.....te       , pgPay_Anal.fPosName(pm.pos_id) as PosName       , pm.pack_num
+..... as PackNum       , pgPay_Anal.fPayDocName(pm.pay_doc_id) as PayDocName
+.....      , - ps.delta as PaySumm, 0 as PeniSumm       , 0 as IsOtsev, 0 as
+.....IsPeni, 0 as IsVpc       , 'cpa_p' as debug     from t_bill_tmp tb, cpa_
+.....payment cp, t_saldo ts, t_user_type_ref ut, t_payments pm,
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 5
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 3278025 Buffer Gets : 24724795
+First Load Time: 2017-07-05/05:30:00
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job;  next_date TIMESTAMP WITH TIME ZONE
+.....:= :mydate;  broken BOOLEAN := FALSE;  job_name VARCHAR2(30) := :job_nam
+.....e;  job_subname VARCHAR2(30) := :job_subname;  job_owner VARCHAR2(30) :=
+..... :job_owner;  job_start TIMESTAMP WITH TIME ZONE := :job_start;  job_sch
+.....eduled_start TIMESTAMP WITH TIME ZONE := :job_scheduled_start;  window_s
+.....tart TIMESTAMP WITH TIME ZONE := :window_start;  window_end TIMESTAMP WI
+.....TH TIME ZONE := :window_end;  chain_id VARCHAR2(14) :=  :chainid;  crede
+.....ntial_owner varchar2(30) := :credown;  credential_name  varchar2(30) :=
+.....:crednam;  destination_owner varchar2(30) := :destown;  destination_name
+..... varchar2(30) := :destnam;  job_dest_id varchar2(14) := :jdestid;  log_i
+.....d number := :log_id;  BEGIN  begin     GTA_REPORTS.REP_GAP2;  gta_report
+.....s.REP_GAP; GTA_REPORTS.UPDATE_PAYMENTS;     GTA_REPORTS.REP_GAP_RECALC;
+.....  end;  :mydate := next_date; IF broken THEN :b := 1; ELSE :b := 0; END
+.....IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 6
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 2965981 Buffer Gets : 13151122
+First Load Time: 2017-07-05/06:15:37
+SQL Statement-------->
+.....UPDATE GTA_REP_GAP2 GTA SET PAYMENTS1 = GTA_REPORTS.F_PAYMENTS_GET (GTA.
+.....INET_USER_ID, GTA.OTA_USER_ID, GTA.BID, 0), PAYMENTS2 = GTA_REPORTS.F_PA
+.....YMENTS_GET (GTA.INET_USER_ID, GTA.OTA_USER_ID, GTA.BID, 1), PAYMENTS3 =
+.....GTA_REPORTS.F_PAYMENTS_GET (GTA.INET_USER_ID, GTA.OTA_USER_ID, GTA.BID,
+.....2), PAYMENTS4 = GTA_REPORTS.F_PAYMENTS_GET (GTA.INET_USER_ID, GTA.OTA_US
+.....ER_ID, GTA.BID, 3), PAYMENTS5 = GTA_REPORTS.F_PAYMENTS_GET (GTA.INET_USE
+.....R_ID, GTA.OTA_USER_ID, GTA.BID, 4), PAYMENTS6 = GTA_REPORTS.F_PAYMENTS_G
+.....ET (GTA.INET_USER_ID, GTA.OTA_USER_ID, GTA.BID, 5), PAYMENTS7 = GTA_REPO
+.....RTS.F_PAYMENTS_GET (GTA.INET_USER_ID, GTA.OTA_USER_ID, GTA.BID, 6), PAYM
+.....ENTS8 = GTA_REPORTS.F_PAYMENTS_GET (GTA.INET_USER_ID, GTA.OTA_USER_ID, G
+.....TA.BID, 7), PAYMENTS9 = GTA_REPORTS.F_PAYMENTS_GET (GTA.INET_USER_ID, GT
+.....A.OTA_USER_ID, GTA.BID, 8), PAYMENTS10 = GTA_REPORTS.F_PAYMENTS_GET (GTA
+......INET_USER_ID, GTA.OTA_USER_ID, GTA.BID, 9), PAYMENTS11 = GTA_REPORTS.F_
+.....PAYMENTS_GET (GTA.INET_USER_ID, GTA.OTA_USER_ID, GTA.BID, 10), P
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 7
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 2885434 Buffer Gets : 455683152
+First Load Time: 2017-07-05/02:00:04
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN -- ежедневный сбор данных для формирования операт
+.....ивной справки по услугам за открытый период (форма 55) begin    add_open
+.....bill_statistic.CALCALL_CONST; end; :mydate := next_date; IF broken THEN
+.....:b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 8
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 2876410 Buffer Gets : 2911842
+First Load Time: 2017-06-14/16:45:28
+SQL Statement-------->
+.....SELECT 'СИ','01','N_CONTENTS_ORDER',COUNT(*) FROM "N_CONTENTS_ORDERS" "A
+.....1"
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 9
+----------------------------------------------------------------------------
+Executions : 2
+Disk Reads : 5567742 Buffer Gets : 25039193
+First Load Time: 2017-07-05/07:03:34
+SQL Statement-------->
+..... select IsVpc,IsOtsev,krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,   sum(P
+.....aySumm), sum(PeniSumm), count(pay_id) from (select pay_id,IsVpc,IsOtsev,
+.....krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,    sum(PaySumm) as PaySumm, s
+.....um(PeniSumm) as PeniSumm  from  (select IsVpc, IsOtsev,     PayDocName a
+.....s krit1,     null as krit2,     null as krit3,     PayDocName as kritfs1
+.....,     null as kritfs2,     null as kritfs3,     PaySumm, nvl(PeniSumm, 0
+.....) as PeniSumm, pay_id   from (( ( (     select /*+ ORDERED INDEX(TB OT2K
+.....VINT#REPORT_ID) INDEX(CP IDX_CPA_PAYMENT#BID) INDEX(TS SALDO#USER#BILLIN
+.....G) */         pm.payment_id as pay_id, 0 as c_mode, pm.pay_date as PayDa
+.....te       , pgPay_Anal.fPosName(pm.pos_id) as PosName       , pm.pack_num
+..... as PackNum       , pgPay_Anal.fPayDocName(pm.pay_doc_id) as PayDocName
+.....      , - ps.delta as PaySumm, 0 as PeniSumm       , 0 as IsOtsev, 0 as
+.....IsPeni, 0 as IsVpc       , 'cpa_p' as debug     from t_bill_tmp tb, cpa_
+.....payment cp, t_saldo ts, t_user_type_ref ut, t_payments pm,
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 10
+----------------------------------------------------------------------------
+Executions : 4
+Disk Reads : 10536949 Buffer Gets : 47111386
+First Load Time: 2017-07-04/07:13:27
+SQL Statement-------->
+.....SELECT P_VNDR_ID,P_DEPT_ID,P_DEPT_ORD,P_DEPT_NAME,P_IS_VPC,P_IS_OTSEV,P_
+.....KRIT1,P_KRIT2,P_KRIT3,P_PAY_SUMM,P_PENI_SUMM,P_COUNT   FROM TABLE(PGPAY_
+.....ANAL.FGETPAYLIST( NULL )) T ORDER BY T.P_DEPT_ORD,T.P_KRITFS1,T.P_KRITFS
+.....2,T.P_KRITFS3
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 11
+----------------------------------------------------------------------------
+Executions : 5
+Disk Reads : 12156171 Buffer Gets : 52566741
+First Load Time: 2017-07-04/07:13:27
+SQL Statement-------->
+.....SELECT D.DEPT_ID AS DEPT_ID, D.DEPT_ORD AS DEPT_ORD, D.DEPT_NAME AS DEPT
+....._NAME, P.* FROM TABLE(CAST(PGPAY_ANAL.FGETDEPTLIST AS ANL_DEPT_TABLE)) D
+..... , TABLE(CAST(PGPAY_ANAL.FSELECTPAYS(:B1 , D.DEPT_ID) AS ANL_PAY_TABLE))
+..... P
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 12
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 2386409 Buffer Gets : 1068221982
+First Load Time: 2017-07-05/06:59:09
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN DECLARE                 l_errc   VARCHAR2(1);
+.....             l_errm   VARCHAR2(2000);               BEGIN
+.....    VLG_KV_XML_PKG.CR_DATA_TOEMAIL(                       x_errc
+.....=> l_errc                       ,x_errm       => l_errm
+.....      ,p_billing_id => 201706                       ,p_user_list_id => N
+.....ULL                     );               END; :mydate := next_date; IF b
+.....roken THEN :b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 13
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 2260990 Buffer Gets : 52366895
+First Load Time: 2017-07-04/19:45:25
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN /* ЦСДЗ ОБНОВЛЕНИЕ САЛЬДО*/ begin   if n.gsr_Find
+....._Task('WAIT_DEBT_CACHE')='N'  then    pkg_csd_api.update_regs;   end if;
+.....  --null; end;  :mydate := next_date; IF broken THEN :b := 1; ELSE :b :=
+..... 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 14
+----------------------------------------------------------------------------
+Executions : 3
+Disk Reads : 5916314 Buffer Gets : 78645196
+First Load Time: 2017-07-05/06:15:48
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN KSU_RUS.Mass_Fill_Job(KID=>1006650959652,KID2=>10
+.....06650960149,BID=>201706,SESS_ID=>1668553044,IS_DEL=>'Y',pIdentSvc=>10066
+.....50960394,pSheetListId=>1006650960327); :mydate := next_date; IF broken T
+.....HEN :b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 15
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 1838599 Buffer Gets : 5816107
+First Load Time: 2017-07-02/14:44:28
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN -- ЦСДЗ -- -- Импорт событий в Д2 --  begin  pkg_
+.....csd_api.P_DEBT_IMPEX_PROC;  end;  :mydate := next_date; IF broken THEN :
+.....b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 16
+----------------------------------------------------------------------------
+Executions : 2
+Disk Reads : 3299826 Buffer Gets : 37357296
+First Load Time: 2017-07-05/13:07:04
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN KSU_RUS.Mass_Fill_Job(KID=>1006651518372,KID2=>10
+.....06651518793,BID=>201706,SESS_ID=>1668690550,IS_DEL=>'Y',pIdentSvc=>10066
+.....51519235,pSheetListId=>1006651518943); :mydate := next_date; IF broken T
+.....HEN :b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 17
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 1619582 Buffer Gets : 5463976
+First Load Time: 2017-07-05/14:17:39
+SQL Statement-------->
+..... select IsVpc,IsOtsev,krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,   sum(P
+.....aySumm), sum(PeniSumm), count(pay_id) from (select pay_id,IsVpc,IsOtsev,
+.....krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,    sum(PaySumm) as PaySumm, s
+.....um(PeniSumm) as PeniSumm  from  (select IsVpc, IsOtsev,     PayDocName a
+.....s krit1,     null as krit2,     null as krit3,     PayDocName as kritfs1
+.....,     null as kritfs2,     null as kritfs3,     PaySumm, nvl(PeniSumm, 0
+.....) as PeniSumm, pay_id   from (( ( (     select /*+ ORDERED INDEX(TB OT2K
+.....VINT#REPORT_ID) INDEX(CP IDX_CPA_PAYMENT#BID) INDEX(TS SALDO#USER#BILLIN
+.....G) */         pm.payment_id as pay_id, 0 as c_mode, pm.pay_date as PayDa
+.....te       , pgPay_Anal.fPosName(pm.pos_id) as PosName       , pm.pack_num
+..... as PackNum       , pgPay_Anal.fPayDocName(pm.pay_doc_id) as PayDocName
+.....      , - ps.delta as PaySumm, 0 as PeniSumm       , 0 as IsOtsev, 0 as
+.....IsPeni, 0 as IsVpc       , 'cpa_p' as debug     from t_bill_tmp tb, cpa_
+.....payment cp, t_saldo ts, t_user_type_ref ut, t_payments pm,
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 18
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 1619553 Buffer Gets : 5464376
+First Load Time: 2017-07-05/14:17:38
+SQL Statement-------->
+.....select p_vndr_id, p_dept_id, p_dept_ord, p_dept_name, p_is_vpc, p_is_ots
+.....ev,      p_krit1, p_krit2, p_krit3, p_pay_summ, p_peni_summ, p_count   f
+.....rom table( pgPay_Anal.fGetPayList(:vndr_id)) t    order by t.p_dept_id,
+.....t.p_kritfs1, t.p_kritfs2, t.p_kritfs3
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 19
+----------------------------------------------------------------------------
+Executions : 3
+Disk Reads : 4687575 Buffer Gets : 204717808
+First Load Time: 2017-07-05/00:05:02
+SQL Statement-------->
+.....call SVVO_REP_DZ_OTTOK_6M.PR_DZ_OTTOK_6M ( :0,:1,:2 )
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 20
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 1529907 Buffer Gets : 403002361
+First Load Time: 2017-07-04/16:41:00
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN -- RMS DATA DEBTS declare   v_ret varchar2(1000);
+..... v_cnt_OK number; v_cnt_ERR number; begin   v_ret := vlg_rms_debts_WS.lo
+.....adDebt(201706,201706,null,0,v_cnt_OK, v_cnt_ERR,'N','N'); end; :mydate :
+.....= next_date; IF broken THEN :b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 21
+----------------------------------------------------------------------------
+Executions : 13
+Disk Reads : 19427506 Buffer Gets : 1331582378
+First Load Time: 2017-07-04/04:05:40
+SQL Statement-------->
+.....SELECT SUM(T.SUMM) TOPAYSMM,S1.USER_TYPE_ID,TMP.VALUE FILIAL_DEPT_ID,TU.
+.....USER_ID VNDR_ID   FROM T_SALDO S1,T_USER_TYPE_TMP R,T_BLNC_TMP TMP,T_USE
+.....R_TYPE_REF UTR,TEMP_UID TU,T_TOPAY T  WHERE S1.BILLING_ID = :b1  AND S1.
+.....USER_TYPE_ID = R.USER_TYPE_ID  AND R.REPORT_ID = :b2  AND TMP.FILIAL_DEP
+.....T_ID = S1.DEPT_ID  AND TMP.REPORT_ID = :b3  AND UTR.USER_TYPE_ID = S1.US
+.....ER_TYPE_ID  AND UTR.USER_TYPE_ID = R.USER_TYPE_ID  AND TU.ACCOUNT = UTR.
+.....ISCORP  AND T.MDL_BILL_ID IS NULL  AND T.BILLING_ID = :b1  AND T.USER_ID
+..... = S1.USER_ID  AND T.TOPAY_TITLE_ID_REPLACE IS NULL  AND SUMM > 0  AND T
+......VNDR_ID = TU.USER_TYPE_ID  GROUP BY S1.USER_TYPE_ID,TMP.VALUE,UTR.ISCOR
+.....P,TU.USER_ID
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 22
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 1427857 Buffer Gets : 9090519
+First Load Time: 2017-07-05/12:18:35
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN PeniBlnc.FILLBLNC_NEW(nIdent=>1006651456391, nSes
+.....sionID=>1668459493, nkiid=>1006651455847); :mydate := next_date; IF brok
+.....en THEN :b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 23
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 1390371 Buffer Gets : 14272278
+First Load Time: 2017-07-05/11:12:21
+SQL Statement-------->
+.....SELECT DISTINCT D.USER_ID, U.USER_TYPE_ID FROM CPA_DEBT_CACHE D ,T_USERS
+..... U ,T_VENDORS V WHERE D.USER_ID=U.USER_ID AND U.ISCORP=:B4 AND D.APPBID>
+.....= :B3 AND D.CURBID = :B2 AND D.APPBID <= :B1 AND D.VND_ID=V.VNDR_ID AND
+.....U.USER_TYPE_ID IN (117753340, 5 ,6 ,7 ,8 ,9 ,10,11,12,13, 151147008,1511
+.....47013,151147018,151147023,151147028,151147042) AND V.ORDNUM IN(1,55,98,9
+.....9,150,200,202,214) AND NOT EXISTS (SELECT 1 FROM V_INSTLMNT WHERE ISACTI
+.....V='Y' AND USER_ID=U.USER_ID )
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 24
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 1340850 Buffer Gets : 5661833
+First Load Time: 2017-07-04/13:57:20
+SQL Statement-------->
+.....create table shek_ota_kc_20170407 as select s.serv_first_id,        fili
+.....al_name "Региональный филиал",        g.name РУС,        tt.name "Город/
+.....населенный пункт",        sr.name "Улица предоставления услуги",
+.....o.house "Дом ",        o.corpus "Корпус",        (select case
+.....       when b.house_id is not null then                   'Да'
+.....      end           from t_adr_layer_ref r, t_adr_layer_bunch b
+..... where upper(r.note) like '%ОКН%'            and upper(r.note) not like
+.....'%СТАРЫЙ%'            and r.id_layer = b.id_layer            and b.house
+....._id = nvl(s.house_id, u.house_id)            and rownum = 1) "Признак ОК
+.....Н",        u.account "Лицевой счет ",        u.inn "ИНН",        u.name
+....."Наименование клиента",        p_doc.get_udopinfo_sobj(u.user_id, 199995
+.....0, sysdate) "Сегмент",        p_doc.get_udopinfo_sobj(u.user_id, 1999916
+....., sysdate) "Макросегмент (В2B, B2G, B2O)",        p_doc.get_udopinfo_sob
+.....j(u.user_id, 1999917, sysdate) "Подсегмент",        p_doc.get_ud
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 25
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 1304018 Buffer Gets : 2846449
+First Load Time: 2017-07-05/14:51:28
+SQL Statement-------->
+..... select IsVpc,IsOtsev,krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,   sum(P
+.....aySumm), sum(PeniSumm), count(pay_id) from (select pay_id,IsVpc,IsOtsev,
+.....krit1,krit2,krit3,kritfs1,kritfs2,kritfs3,    sum(PaySumm) as PaySumm, s
+.....um(PeniSumm) as PeniSumm  from  (select IsVpc, IsOtsev,     PayDocName a
+.....s krit1,     null as krit2,     null as krit3,     PayDocName as kritfs1
+.....,     null as kritfs2,     null as kritfs3,     PaySumm, nvl(PeniSumm, 0
+.....) as PeniSumm, pay_id   from (( (     select /*+ ORDERED INDEX(TB OT2KVI
+.....NT#REPORT_ID) INDEX(CP IDX_CPA_PAYMENT#BID) INDEX(TS SALDO#USER#BILLING)
+..... */         pm.payment_id as pay_id, 0 as c_mode, pm.pay_date as PayDate
+.....       , pgPay_Anal.fPosName(pm.pos_id) as PosName       , pm.pack_num a
+.....s PackNum       , pgPay_Anal.fPayDocName(pm.pay_doc_id) as PayDocName
+.....    , - ps.delta as PaySumm, 0 as PeniSumm       , 0 as IsOtsev, 0 as Is
+.....Peni, 0 as IsVpc       , 'cpa_p' as debug     from t_bill_tmp tb, cpa_pa
+.....yment cp, t_saldo ts, t_user_type_ref ut, t_payments pm,       c
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 26
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 1135880 Buffer Gets : 258685783
+First Load Time: 2017-07-05/11:47:29
+SQL Statement-------->
+.....DECLARE job BINARY_INTEGER := :job; next_date DATE := :mydate;  broken B
+.....OOLEAN := FALSE; BEGIN DECLARE BEGIN IPS_RUN_REPORTS.INSERT_PD ('Y'); IP
+.....S_RUN_REPORTS.INSERT_OBORUDOVANIE ('Y'); IPS_RUN_REPORTS.INSERT_OPTIONS
+.....('Y'); EXCEPTION WHEN OTHERS THEN ROLLBACK; END; :mydate := next_date; I
+.....F broken THEN :b := 1; ELSE :b := 0; END IF; END;
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 27
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 1099018 Buffer Gets : 44126734
+First Load Time: 2017-07-04/16:41:27
+SQL Statement-------->
+.....INSERT INTO VLG_RMS_DEBTS_DATA (LOCALSYSTEMID, CUSTOMERSERVICE, ENDBALAN
+.....CE, BILLINGPERIOD, STARTPERIOD, CLIENT, SERVICEPROVIDER, ISBILL, PAYRECA
+.....LC) SELECT D.LOCALSYSTEMID, D.CUSTOMERSERVICE, D.ENDBALANCE, D.BILLINGPE
+.....RIOD, D.STARTPERIOD, D.CLIENT, D.SERVICEPROVIDER, D.ISBILL, D.PAYRECALC
+.....FROM VLG_RMS_DEBTS D WHERE D.BILLINGPERIOD = :B1
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 28
+----------------------------------------------------------------------------
+Executions : 0
+Disk Reads : 1079719 Buffer Gets : 7135950
+First Load Time: 2017-07-05/12:28:28
+SQL Statement-------->
+.....INSERT INTO TEMP_UID (USER_ID,HOUSE_ID) SELECT DISTINCT USER_ID, VND_ID
+.....FROM ( SELECT B.USER_ID, B.VND_ID FROM BL_BASE_SUM B WHERE B.B_ID IN (SE
+.....LECT B.BILLING_ID FROM T_BILL_TMP B WHERE B.REPORT_ID = :B1 ) AND B.FINE
+....._DAY <> 0 AND B.VND_ID IN (SELECT NUM1 FROM K_RG_TMP ) GROUP BY B.USER_I
+.....D, B.VND_ID, B.CHARGE_ID, B.OTHER_ID, B.VAL_OTHER_ID )
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 29
+----------------------------------------------------------------------------
+Executions : 10
+Disk Reads : 8143086 Buffer Gets : 20688409
+First Load Time: 2017-07-05/05:00:32
+SQL Statement-------->
+.....SELECT "A6"."RC_ID",NVL("A5"."SUM_SALDO",0),NVL("A4"."SUM_DOLG",0),NVL("
+.....A3"."SUM_PAYS",0),NVL("A2"."SUM_CORR_PAYS",0),NVL("A2"."SUM_CORR_CANCEL_
+.....PAYS",0),"N"."PGBL_PENALTY"."FGET_OUT_PENA_SALDO"("A6"."CL_USER_ID",5258
+.....62019,201707),"A1"."DEBT_END" FROM  (SELECT "from$_subquery$_005"."RC_ID
+....._2" "RC_ID","from$_subquery$_005"."CL_USER_ID_1" "CL_USER_ID" FROM  (SEL
+.....ECT "from$_subquery$_003"."FILIAL_ID_2" "FILIAL_ID_0","from$_subquery$_0
+.....03"."CL_USER_ID_4" "CL_USER_ID_1","from$_subquery$_003"."RC_ID_6" "RC_ID
+....._2","H"."RC_ID" "RC_ID_3" FROM  (SELECT "R"."REGISTER_ID" "REGISTER_ID_0
+.....","R"."USER_ID" "USER_ID_1","R"."FILIAL_ID" "FILIAL_ID_2","RC"."REGISTER
+....._ID" "REGISTER_ID_3","RC"."CL_USER_ID" "CL_USER_ID_4","RC"."USER_ID" "US
+.....ER_ID_5","RC"."RC_ID" "RC_ID_6" FROM "DZ_REGISTERS"@! "R","DZ_REGISTERS_
+.....CLIENTS"@! "RC" WHERE "R"."REGISTER_ID"="RC"."REGISTER_ID") "from$_subqu
+.....ery$_003","DZ_CLIENT_HSTATUS"@! "H" WHERE "H"."RC_ID"(+)="from$_subquery
+.....$_003"."RC_ID_6" AND "H"."STATUS_ID"(+)=999) "from$_subquery$_00
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+SQL Stmnt Number: 30
+----------------------------------------------------------------------------
+Executions : 1
+Disk Reads : 810619 Buffer Gets : 7317079
+First Load Time: 2017-07-05/13:45:59
+SQL Statement-------->
+.....SELECT DISTINCT D.USER_ID, U.USER_TYPE_ID FROM CPA_DEBT_CACHE D ,T_USERS
+..... U ,T_VENDORS V WHERE D.USER_ID=U.USER_ID AND U.ISCORP=:B3 AND U.USER_TY
+.....PE_ID IN (117753340, 5 ,6 ,7 ,8 ,9 ,10,11,12,13,151147008,151147013,1511
+.....47018,151147023,151147028,151147042) AND D.APPBID>0 AND D.CURBID = :B2 A
+.....ND D.APPBID =:B1 AND D.APPBID = ( SELECT MIN(D_1.APPBID) FROM CPA_DEBT_C
+.....ACHE D_1 WHERE D_1.USER_ID=D.USER_ID AND D_1.CURBID = D.CURBID ) AND NOT
+..... EXISTS (SELECT 1 FROM V_INSTLMNT WHERE ISACTIV='Y' AND USER_ID=U.USER_I
+.....D ) AND D.VND_ID=V.VNDR_ID AND NOT EXISTS (SELECT 1 FROM T_PAYMENTS PP W
+.....HERE BILLING_ID = BILLPER.GET_CURR_BILLID AND PP.USER_ID = D.USER_ID) AN
+.....D V.ORDNUM IN(1,55,98,99,150,200,202,214)
+----------------------------------------------------------------------------
+PL/SQL procedure successfully completed.

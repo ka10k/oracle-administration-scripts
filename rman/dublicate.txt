@@ -1,0 +1,66 @@
+Дубликат базы SIPKZ
+
+1.На тестовом сервере настраиваем листенер
+2.pfile, правим параметры вручную, память, пути в файлам, логам и тд
+после настройки pfile стартуем базу и CREATE SPFILE FROM PFILE = '/ora/11gR2/dbs/initTSIPKZ.ora';
+3.shutdown, startup nomount
+4.
+
+TSIPKZ
+SGA=8GB
+
+
+alter system set db_recovery_file_dest='/db/sip_kz/arch/fast_recovery_area' scope=spfile;
+alter system set log_archive_dest_1='LOCATION=/db/sip_kz/arch' scope=spfile;
+alter system set DB_RECOVERY_FILE_DEST_SIZE=4977M scope=spfile;
+
+#рокировка в случае неудачного запуска
+create pfile='/db/sip_kz/arch/initTSIPKZ.ora' from spfile;
+CREATE SPFILE FROM PFILE = '/db/sip_kz/arch/initTSIPKZ.ora';
+
+startup nomount; ###база не создана, запускаем только софт
+
+CREATE SPFILE FROM PFILE = '/ora/11gR2/dbs/initTSIPKZ.ora';
+alter system set db_file_name_convert='real_base_path','new_tobe_dublicated_base_path' scope=spfile;
+alter system set db_file_name_convert='/db/kz_sip/db1','/db/sip_kz/db1' scope=spfile;
+alter system set log_file_name_convert='/db/kz_sip/db1','/db/sip_kz/db1' scope=spfile;
+
+
+
+
+###(с базы SIPKZ)
+export NLS_DATE_FORMAT='DD-MM-YYYY:HH24:MI:SS'
+rman 
+connect target sys/qwaszx12@SIPKZ
+list backup of controlfile;
+###(смотрим последний SCN)
+
+###(с базы TSIPKZ)
+export NLS_DATE_FORMAT='DD-MM-YYYY:HH24:MI:SS'
+connect target sys/qwaszx12@SIPKZ
+connect catalog rman112/rman@rcat
+connect auxiliary /
+###connected to auxiliary database: TSIPKZ (not mounted)
+
+run {
+set until scn 11886867490797;
+allocate channel ch0 type disk;
+allocate channel ch1 type disk;
+allocate channel ch2 type disk;
+allocate channel ch3 type disk;
+allocate channel ch4 type disk;
+allocate channel ch5 type disk;
+allocate channel ch6 type disk;
+allocate channel ch7 type disk;
+allocate channel ch8 type disk;
+allocate auxiliary channel ch100 type SBT_TAPE;
+allocate auxiliary channel ch101 type SBT_TAPE;
+allocate auxiliary channel ch102 type SBT_TAPE;
+allocate auxiliary channel ch103 type SBT_TAPE;
+allocate auxiliary channel ch104 type SBT_TAPE;
+allocate auxiliary channel ch105 type SBT_TAPE;
+allocate auxiliary channel ch106 type SBT_TAPE;
+allocate auxiliary channel ch107 type SBT_TAPE;
+allocate auxiliary channel ch108 type SBT_TAPE;
+duplicate target database to TSIPKZ;
+}

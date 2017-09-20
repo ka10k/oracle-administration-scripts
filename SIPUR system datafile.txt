@@ -1,0 +1,20 @@
+
+source /home/oracle/.envDB
+sqlplus / as sysdba
+shutdown immediate;
+exit
+
+source /home/oracle/.envCRS
+asmcmd
+cp /ora/11gR2/dbs/SIPUR_DATA +SIPUR_DATA/startip/datafile/system.01
+exit
+
+source /home/oracle/.envDB
+
+sqlplus / as sysdba
+startup mount;
+alter database rename file '/ora/11gR2/dbs/SIPUR_DATA' to '+SIPUR_DATA/startip/datafile/system.01';
+alter database open;
+exit
+
+rm /ora/11gR2/dbs/SIPUR_DATA

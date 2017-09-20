@@ -1,0 +1,38 @@
+NOAUDIT ALL;
+/
+truncate table sys.aud$ drop storage;
+/
+
+1.Марий Эл +
+2.Пенза +
+3.НН +
+4.Саратов +
+5.Самара +
+6.Казань +
+7.Оренбург +
+8.Мордовия +
+9.Киров +
+10.Чувашия +
+11.Ульяновск
+12.Удмуртия +
+
+
+AUDIT SESSION; --АУДИТ НА СЕССИИ
+--dba_audit_session
+--sys.aud$
+
+audit ADMINISTER DATABASE TRIGGER;
+audit ALTER SESSION;
+audit ALTER USER;
+audit ALTER SYSTEM;
+audit CREATE SESSION;
+audit CREATE USER;
+audit DIRECTORY; 
+audit CREATE ANY DIRECTORY; 
+audit DROP ANY TABLE;
+audit DROP USER;
+audit EXECUTE ANY CLASS;
+audit USER;
+audit DATABASE LINK;
+audit CREATE DATABASE LINK;
+audit CREATE PUBLIC DATABASE LINK;

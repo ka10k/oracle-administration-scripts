@@ -1,0 +1,1 @@
+SELECT pool,name, bytes FROM v$sgastat

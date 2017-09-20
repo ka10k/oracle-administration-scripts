@@ -1,0 +1,2754 @@
+DROP TABLE SIP_W.TB_SERVICES CASCADE CONSTRAINTS;
+
+CREATE TABLE SIP_W.TB_SERVICES
+(
+  SRV_ID               NUMBER                   NOT NULL,
+  SRV_DATE             DATE                     NOT NULL,
+  SRV_TIME             NUMBER                   DEFAULT 1                     NOT NULL,
+  SRV_VALUE            NUMBER                   NOT NULL,
+  SRV_COST             NUMBER                   NOT NULL,
+  SRV_TASKID           VARCHAR2(80 BYTE)        NOT NULL,
+  SRV_BASE_COST        NUMBER(24,6)             NOT NULL,
+  SRV_MSR_CODE         VARCHAR2(10 BYTE)        NOT NULL,
+  SRV_CNT_ID           NUMBER(10)               NOT NULL,
+  SRV_SRD_CODE         VARCHAR2(15 BYTE)        NOT NULL,
+  SRV_INT_CODE         VARCHAR2(10 BYTE)        NOT NULL,
+  SRV_TRS_ID           NUMBER                   NOT NULL,
+  SRV_AB_ID            NUMBER(10)               NOT NULL,
+  SRV_USER_NAME        VARCHAR2(50 BYTE)        NOT NULL,
+  SRV_TFP_CODE         VARCHAR2(15 BYTE),
+  SRV_PORT             NUMBER(10),
+  SRV_NAS              VARCHAR2(10 BYTE),
+  SRV_IP               VARCHAR2(100 BYTE),
+  SRV_CALLING_STATION  NUMBER,
+  SRV_CALLED_STATION   NUMBER,
+  SRV_INPUTOCTETS      NUMBER,
+  SRV_OUTPUTOCTETS     NUMBER,
+  SRV_USS_LOGNAME      VARCHAR2(50 BYTE),
+  SRV_USS_SL_TYPE      VARCHAR2(10 BYTE),
+  SRV_SPEED            NUMBER,
+  SRV_TRL_ID           NUMBER(10),
+  SRV_RB_FL            VARCHAR2(1 BYTE),
+  SRV_PRV_ID           NUMBER,
+  SRV_SESS_NUM         NUMBER(5),
+  SRV_MD_ID            NUMBER,
+  SRV_DESC             VARCHAR2(2000 BYTE)
+)
+NOCOMPRESS 
+TABLESPACE USERS
+RESULT_CACHE (MODE DEFAULT)
+PCTUSED    0
+PCTFREE    5
+INITRANS   30
+MAXTRANS   255
+STORAGE    (
+            INITIAL          10M
+            NEXT             300M
+            MINEXTENTS       1
+            MAXEXTENTS       UNLIMITED
+            PCTINCREASE      0
+            BUFFER_POOL      DEFAULT
+            FLASH_CACHE      DEFAULT
+            CELL_FLASH_CACHE DEFAULT
+           )
+LOGGING
+PARTITION BY RANGE (SRV_DATE)
+(  
+  PARTITION PART2012_02 VALUES LESS THAN (TO_DATE(' 2012-03-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_03 VALUES LESS THAN (TO_DATE(' 2012-04-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_04 VALUES LESS THAN (TO_DATE(' 2012-05-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_05 VALUES LESS THAN (TO_DATE(' 2012-06-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_06 VALUES LESS THAN (TO_DATE(' 2012-07-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_07 VALUES LESS THAN (TO_DATE(' 2012-08-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_08 VALUES LESS THAN (TO_DATE(' 2012-09-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_09 VALUES LESS THAN (TO_DATE(' 2012-10-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_10 VALUES LESS THAN (TO_DATE(' 2012-11-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_11 VALUES LESS THAN (TO_DATE(' 2012-12-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_12 VALUES LESS THAN (TO_DATE(' 2013-01-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   1
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_01 VALUES LESS THAN (TO_DATE(' 2013-02-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_02 VALUES LESS THAN (TO_DATE(' 2013-03-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_03 VALUES LESS THAN (TO_DATE(' 2013-04-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_04 VALUES LESS THAN (TO_DATE(' 2013-05-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_05 VALUES LESS THAN (TO_DATE(' 2013-06-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_06 VALUES LESS THAN (TO_DATE(' 2013-07-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_07 VALUES LESS THAN (TO_DATE(' 2013-08-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_08 VALUES LESS THAN (TO_DATE(' 2013-09-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_09 VALUES LESS THAN (TO_DATE(' 2013-10-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_10 VALUES LESS THAN (TO_DATE(' 2013-11-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_11 VALUES LESS THAN (TO_DATE(' 2013-12-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_12 VALUES LESS THAN (TO_DATE(' 2014-01-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_01 VALUES LESS THAN (TO_DATE(' 2014-02-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_02 VALUES LESS THAN (TO_DATE(' 2014-03-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_03 VALUES LESS THAN (TO_DATE(' 2014-04-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_04 VALUES LESS THAN (TO_DATE(' 2014-05-01 00:00:00', 'SYYYY-MM-DD HH24:MI:SS', 'NLS_CALENDAR=GREGORIAN'))
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART_MAXVALUE VALUES LESS THAN (MAXVALUE)
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    5
+    INITRANS   30
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          29M
+                NEXT             300M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               )
+)
+NOCACHE
+NOPARALLEL
+MONITORING
+ENABLE ROW MOVEMENT;
+
+COMMENT ON TABLE SIP_W.TB_SERVICES IS 'Версия: 1.5';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_ID IS 'Уникальный идентификатор';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_DATE IS 'Дата и время окончания предоставления услуги (дата регистрации услуги в системе)';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_TIME IS 'Кол-во времени в минутах, которое предоставлялась услуга';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_VALUE IS 'Кол-во штук либо байт предоставленной услуги';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_COST IS 'Стоимость услуги с учетом всех коэффициентов и скидок';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_TASKID IS 'Идентификатор задачи, формируемый по правилу:';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_BASE_COST IS 'Базовая стоимость оказанной услуги (без скидок)';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_CNT_ID IS 'Идентификатор счетчика';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_SRD_CODE IS 'Код услуги';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_INT_CODE IS 'Код типа интерфейса';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_TRS_ID IS 'Идентификатор услуги в тарифном плане';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_AB_ID IS 'Идентификатор абонента';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_USER_NAME IS 'Logname';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_TFP_CODE IS 'Код тарифного плана по которому была тарифицированна данная услуга';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_PORT IS 'Порт';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_NAS IS 'НАС';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_IP IS 'IP pool';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_CALLING_STATION IS 'Телефон';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_INPUTOCTETS IS 'Количество байт входящих';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_OUTPUTOCTETS IS 'Количество байт исходящих';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_USS_LOGNAME IS 'Имя логина для сервиса';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_USS_SL_TYPE IS 'Тип сервиса';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_SPEED IS 'Скорость соединения';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_PRV_ID IS 'ID провайдера';
+
+COMMENT ON COLUMN SIP_W.TB_SERVICES.SRV_SESS_NUM IS 'Номер сессии';
+
+
+
+CREATE INDEX SIP_W.SRV_AB_FK_I ON SIP_W.TB_SERVICES
+(SRV_AB_ID, SRV_DATE)
+  PCTFREE    10
+  INITRANS   30
+  MAXTRANS   255
+  STORAGE    (
+              INITIAL          16K
+              BUFFER_POOL      DEFAULT
+              FLASH_CACHE      DEFAULT
+              CELL_FLASH_CACHE DEFAULT
+             )
+LOGGING
+LOCAL (  
+  PARTITION PART2012_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    80
+    INITRANS   20
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          16K
+                NEXT             704K
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE USERS
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART_MAXVALUE
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               )
+)
+NOPARALLEL;
+
+
+CREATE INDEX SIP_W.SRV_CNT_ID_IX ON SIP_W.TB_SERVICES
+(SRV_CNT_ID)
+  PCTFREE    10
+  INITRANS   30
+  MAXTRANS   255
+  STORAGE    (
+              INITIAL          16K
+              BUFFER_POOL      DEFAULT
+              FLASH_CACHE      DEFAULT
+              CELL_FLASH_CACHE DEFAULT
+             )
+LOGGING
+LOCAL (  
+  PARTITION PART2012_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    80
+    INITRANS   20
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          16K
+                NEXT             704K
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART_MAXVALUE
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               )
+)
+NOPARALLEL;
+
+
+CREATE INDEX SIP_W.SRV_PK ON SIP_W.TB_SERVICES
+(SRV_ID)
+  PCTFREE    10
+  INITRANS   5
+  MAXTRANS   255
+  STORAGE    (
+              INITIAL          512K
+              NEXT             150M
+              BUFFER_POOL      DEFAULT
+              FLASH_CACHE      DEFAULT
+              CELL_FLASH_CACHE DEFAULT
+             )
+LOGGING
+LOCAL (  
+  PARTITION PART2012_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    80
+    INITRANS   20
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          16K
+                NEXT             704K
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART_MAXVALUE
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             150M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               )
+)
+NOPARALLEL;
+
+
+CREATE INDEX SIP_W.SRV_US_FK_I ON SIP_W.TB_SERVICES
+(SRV_USER_NAME, SRV_DATE)
+  PCTFREE    10
+  INITRANS   30
+  MAXTRANS   255
+  STORAGE    (
+              INITIAL          16K
+              BUFFER_POOL      DEFAULT
+              FLASH_CACHE      DEFAULT
+              CELL_FLASH_CACHE DEFAULT
+             )
+LOGGING
+LOCAL (  
+  PARTITION PART2012_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    80
+    INITRANS   20
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          16K
+                NEXT             704K
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2012_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_05
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_06
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_07
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_08
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_09
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_10
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_11
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2013_12
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_01
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_02
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_03
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART2014_04
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               ),  
+  PARTITION PART_MAXVALUE
+    LOGGING
+    NOCOMPRESS 
+    TABLESPACE INDX
+    PCTFREE    10
+    INITRANS   5
+    MAXTRANS   255
+    STORAGE    (
+                INITIAL          64K
+                NEXT             1M
+                MAXSIZE          UNLIMITED
+                MINEXTENTS       1
+                MAXEXTENTS       UNLIMITED
+                BUFFER_POOL      DEFAULT
+                FLASH_CACHE      DEFAULT
+                CELL_FLASH_CACHE DEFAULT
+               )
+)
+NOPARALLEL;
+
+
+CREATE OR REPLACE TRIGGER SIP_W."TR$SRV_BRI" 
+	BEFORE INSERT ON SIP_W.TB_SERVICES 
+	FOR EACH ROW
+BEGIN
+	IF :NEW.srv_date > SYSDATE + 1 / 2 AND
+		 (:NEW.srv_int_code = 'NETFLOW' OR :NEW.srv_int_code LIKE '%TM' OR :NEW.srv_int_code LIKE '%VL') THEN
+		--Ошибка! Попытка зарегистрировать услугу датой большей системного времени базы (%1).
+		raise_application_error(-20666, standard_pkg.get_message('PKG-0840',  TO_CHAR(SYSDATE,  'dd.mm.yyyy hh24:mi:ss')));
+	END IF;
+
+  IF :NEW.srv_int_code LIKE '%TM' AND :NEW.srv_value>31*24*60 /*31 день в минутах*/ THEN
+     raise_application_error(-20667, 'Превышено допустимое значение объема: '||:NEW.srv_value||' минут');
+  END IF;
+
+  IF (:NEW.srv_int_code = 'NETFLOW' OR :NEW.srv_int_code LIKE '%VL') AND :NEW.srv_value>=1E19  THEN
+     raise_application_error(-20667, 'Превышено допустимое значение объема: '||:NEW.srv_value||' байт');
+  END IF;
+
+	IF :NEW.srv_prv_id IS NULL THEN
+		:NEW.srv_prv_id := acscontrol.get_ab_prv_id(:NEW.srv_ab_id);
+	END IF;
+END;
+/
+
+
+CREATE OR REPLACE TRIGGER SIP_W."TR$SRV_JACC_ARIUD" 
+  AFTER INSERT OR UPDATE OR DELETE
+  ON SIP_W.TB_SERVICES 
+  REFERENCING NEW AS NEW OLD AS OLD
+  FOR EACH ROW
+declare
+begin
+  if INSERTING then
+    jacc_pkg.setSrvId(:new.srv_id);
+  elsif DELETING then
+    jacc_pkg.setSrvId(:old.srv_id);
+  end if;
+end tr$srv_jacc_ariud;
+/
+
+
+CREATE OR REPLACE TRIGGER SIP_W."TR$SRV_J_ARIUD" 
+AFTER INSERT  OR DELETE  OR UPDATE
+ON SIP_W.TB_SERVICES 
+REFERENCING NEW AS NEW OLD AS OLD
+FOR EACH ROW
+WHEN (
+NEW.srv_int_code = 'GENERAL' OR OLD.srv_int_code = 'GENERAL'
+      )
+BEGIN
+DECLARE
+  oper VARCHAR2(3);
+BEGIN
+  IF    INSERTING THEN oper := 'INS';
+  ELSIF UPDATING  THEN oper := 'UPD';
+  ELSIF DELETING  THEN oper := 'DEL';
+  END IF;
+  IF INSERTING OR UPDATING THEN
+    INSERT INTO tb_services_jn
+       (jn_operation,
+        jn_oracle_user,
+        jn_datetime,
+        jn_appln,
+        jn_session,
+        srv_id,
+        srv_date,
+        srv_value,
+        srv_srd_code,
+        srv_int_code,
+        srv_trs_id,
+        srv_ab_id,
+        srv_user_name,
+        srv_tfp_code,
+        srv_prv_id)
+      VALUES
+       (oper,
+        acscontrol.get_active_user,
+        sysdate,
+        substr(USERENV('terminal'), 1, 30),
+        substr(USERENV('sessionid'), 1, 38),
+        :NEW.srv_id,
+        :NEW.srv_date,
+        :NEW.srv_value,
+        :NEW.srv_srd_code,
+        :NEW.srv_int_code,
+        :NEW.srv_trs_id,
+        :NEW.srv_ab_id,
+        :NEW.srv_user_name,
+        :NEW.srv_tfp_code,
+        :NEW.srv_prv_id);
+  ELSIF DELETING THEN
+    INSERT INTO tb_services_jn
+       (jn_operation,
+        jn_oracle_user,
+        jn_datetime,
+        jn_appln,
+        jn_session,
+        srv_id,
+        srv_date,
+        srv_value,
+        srv_srd_code,
+        srv_int_code,
+        srv_trs_id,
+        srv_ab_id,
+        srv_user_name,
+        srv_tfp_code,
+        srv_prv_id)
+      VALUES
+       (oper,
+        acscontrol.get_active_user,
+        sysdate,
+        substr(USERENV('terminal'), 1, 30),
+        substr(USERENV('sessionid'), 1, 38),
+        :OLD.srv_id,
+        :OLD.srv_date,
+        :OLD.srv_value,
+        :OLD.srv_srd_code,
+        :OLD.srv_int_code,
+        :OLD.srv_trs_id,
+        :OLD.srv_ab_id,
+        :OLD.srv_user_name,
+        :OLD.srv_tfp_code,
+        :OLD.srv_prv_id);
+  END IF;
+END;
+END TR$SRV_J_ARIUD;
+/
+
+
+CREATE OR REPLACE SYNONYM SIP_WWW.TB_SERVICES FOR SIP_W.TB_SERVICES;
+
+
+BEGIN
+  SYS.DBMS_RLS.DROP_POLICY (
+    object_schema    => 'SIP_W'
+    ,object_name     => 'TB_SERVICES'
+    ,policy_name     => 'SRV_INSUPDEL');
+END;
+/
+
+BEGIN
+  SYS.DBMS_RLS.ADD_POLICY     (
+    object_schema          => 'SIP_W'
+    ,object_name           => 'TB_SERVICES'
+    ,policy_name           => 'SRV_INSUPDEL'
+    ,function_schema       => 'SIP_W'
+    ,policy_function       => 'CHK_DATABASE.SRV_INSUPDEL_WHERE'
+    ,statement_types       => 'SELECT,INSERT,UPDATE,DELETE'
+    ,policy_type           => dbms_rls.shared_context_sensitive
+    ,long_predicate        => FALSE
+    ,update_check          => TRUE
+    ,static_policy         => FALSE
+    ,enable                => TRUE );
+END;
+/
+
+
+
+BEGIN
+  SYS.DBMS_RLS.DROP_POLICY (
+    object_schema    => 'SIP_W'
+    ,object_name     => 'TB_SERVICES'
+    ,policy_name     => 'SRV_SEL');
+END;
+/
+
+BEGIN
+  SYS.DBMS_RLS.ADD_POLICY     (
+    object_schema          => 'SIP_W'
+    ,object_name           => 'TB_SERVICES'
+    ,policy_name           => 'SRV_SEL'
+    ,function_schema       => 'SIP_W'
+    ,policy_function       => 'CHK_DATABASE.SRV_SEL_WHERE'
+    ,statement_types       => 'SELECT'
+    ,policy_type           => dbms_rls.shared_context_sensitive
+    ,long_predicate        => FALSE
+    ,update_check          => FALSE
+    ,static_policy         => FALSE
+    ,enable                => TRUE );
+END;
+/
+
+
+
+ALTER TABLE SIP_W.TB_SERVICES ADD (
+  CONSTRAINT SRV_PRV_FK 
+  FOREIGN KEY (SRV_PRV_ID) 
+  REFERENCES SIP_W.PROVIDERS (PRV_ID)
+  ENABLE VALIDATE);

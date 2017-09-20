@@ -1,0 +1,6 @@
+connect target sys/odf5skfm@volgasd
+run {
+allocate channel ch1 type disk;
+backup database plus archivelog delete input;
+}
+Exit

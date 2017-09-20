@@ -1,0 +1,80 @@
+with  tbbeg1 as (
+select 'DBA' usr, null fil from dual union all
+select 'AFRO' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+select 'DBA_MOSCOW' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+select 'DBALI' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+select 'SIP_MIGR' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+
+select 'SIP_MIGR' usr, sip_ap.aakpkg_help_filial.whoisthisen('sm') fil from dual union all
+
+select 'SIP_MON' usr, sip_ap.aakpkg_help_filial.whoisthisen('nn') fil from dual union all
+
+select 'SIPTMP' usr, sip_ap.aakpkg_help_filial.whoisthisen('pn') fil from dual union all
+
+select 'ADM' usr, sip_ap.aakpkg_help_filial.whoisthisen('ml') fil from dual union all
+
+select 'SIPTMP' usr, sip_ap.aakpkg_help_filial.whoisthisen('ul') fil from dual union all
+select 'SD' usr, sip_ap.aakpkg_help_filial.whoisthisen('ul') fil from dual union all
+select 'BACKUP' usr, sip_ap.aakpkg_help_filial.whoisthisen('ul') fil from dual union all
+
+select 'SIP_W1' usr, sip_ap.aakpkg_help_filial.whoisthisen('ch') fil from dual union all
+select 'SIP_MIGR' usr, sip_ap.aakpkg_help_filial.whoisthisen('ch') fil from dual union all
+select 'CH_GUSAROV' usr, sip_ap.aakpkg_help_filial.whoisthisen('ch') fil from dual union all
+
+select 'DPBACKUP' usr, sip_ap.aakpkg_help_filial.whoisthisen('sr') fil from dual union all
+select 'SIP_MON' usr, sip_ap.aakpkg_help_filial.whoisthisen('sr') fil from dual union all
+
+select 'MAXIM' usr, sip_ap.aakpkg_help_filial.whoisthisen('mr') fil from dual union all
+select 'SYSUSR' usr, sip_ap.aakpkg_help_filial.whoisthisen('mr') fil from dual union all
+select 'GSV' usr, sip_ap.aakpkg_help_filial.whoisthisen('mr') fil from dual union all
+
+select 'OKUNEV' usr, sip_ap.aakpkg_help_filial.whoisthisen('tt') fil from dual union all
+select 'YDANILOV' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'EXP_USER' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'SIP_EXP' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'PSANNIKOV' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'QC' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all 
+select 'SIP_S' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual 
+)
+, tbbeg as ( -- только филиальские учетки
+  select usr from tbbeg1 
+  where fil is null or fil  = sip_ap.aakpkg_help_filial.whoami()
+)
+, tbAllRole_user  (usr, gr, r) as (
+  select usr, granted_role gr, 1 r from DBA_ROLE_PRIVS, tbbeg where grantee = usr and granted_role !='DBA'
+  UNION ALL
+  select usr, dr.granted_role gr, r+1 r
+  from tbAllRole_user t, DBA_ROLE_PRIVS dr
+  where t.gr = dr.grantee and dr.granted_role !='DBA'
+)
+ 
+, tbrep as  (
+  select usr, usr gr from tbbeg union all
+  select usr, gr from tbAllRole_user
+) 
+ 
+, tbGrantNoDBA as (
+select r.usr, s.privilege, count(distinct privilege) over () co
+from tbrep r
+left join DBA_SYS_PRIVS s on r.gr = s.grantee
+)
+ 
+, tb_out as (
+ Select   t.usr, d.privilege priv
+from tbbeg t, sys.DBA_SYS_PRIVS d
+where d.grantee = 'DBA' and not exists (select null from tbGrantNoDBA where usr = t.usr and privilege = d.privilege)
+ )
+
+ 
+/*-- добавляем аудит на системные привелегии на случай фейлов.
+select usr
+, 'AUDIT ' || LISTAGG(priv, ',') WITHIN GROUP (ORDER BY 1) || ' BY '||usr||' BY ACCESS WHENEVER NOT SUCCESSFUL;' AS names
+ from tb_out
+ where exists(select null from STMT_AUDIT_OPTION_MAP where priv = name)
+group by usr; --*/
+ 
+/*-- отключаем аудит. 
+select d.user_name
+, 'NOAUDIT ' || LISTAGG(priv, ',') WITHIN GROUP (ORDER BY 1) AS names || ' BY '||d.user_name||' BY ACCESS;' AS names
+from tbbeg b, dba_priv_audit_opts d
+where b.usr = d.user_name;--*/

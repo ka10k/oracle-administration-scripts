@@ -1,0 +1,79 @@
+cd /home/oracle/cert
+#генерим сертификат реквест Client_Volga_APIELK.csr
+oracle@sd5vp32-ul cert $ openssl req -new -newkey rsa:2048 -sha256 -nodes -out Client_Volga_APIELK.csr -keyout Client_Volga_APIELK.key
+pass:Tch^gJ5N
+#отправил сертификат реквест Client_Volga_APIELK.csr по почте kozyrev-aa@ural.rt.ru
+#получил по почте в ответ сертификат mrfVolga.crt
+
+mkdir /ora/11gR2/owm/wallets && mkdir /ora/11gR2/owm/wallets/elk && cd /ora/11gR2/owm/wallets/elk
+E:\Cert
+/ora/11gR2/owm/wallets/elk
+cp Client_Volga_APIELK.csr /ora/11gR2/owm/wallets/elk
+cp Client_Volga_APIELK.key /ora/11gR2/owm/wallets/elk
+cp mrfVolga.crt /ora/11gR2/owm/wallets/elk
+cd /ora/11gR2/owm/wallets/elk
+
+echo "GET /" | openssl s_client -cert mrfVolga.crt -key Client_Volga_APIELK.key -host 10.184.86.12 -port 8443 > server.txt
+#копируем сертификат из server.txt в server.crt
+
+#создаем PKCS#12 файл из ключа и сертификатов
+openssl pkcs12 -export -in mrfVolga.crt -inkey Client_Volga_APIELK.key -out ewallet.p12  -chain -CAfile server.crt
+
+orapki wallet create -wallet /ora/11gR2/owm/wallets/elk -auto_login -pwd Tch^gJ5N
+orapki wallet display -wallet /ora/11gR2/owm/wallets/elk -pwd Tch^gJ5N
+
+sqlplus / as sysdba
+SET SERVEROUTPUT ON
+EXEC UTL_HTTP.set_wallet('file:/ora/11gR2/owm/wallets/elk', 'Tch^gJ5N');
+select utl_http.request('https://10.184.86.12:8443/web_api/apielk') from dual;
+
+#<?xml version="1.0" encoding="UTF-8"?><response resultCode="1" resultComment="Произошла ошибка"/>
+
+
+#ACL
+
+begin
+  dbms_network_acl_admin.create_acl (
+    acl         => 'elkapi_http.xml',
+    description => 'HTTP Access',
+    principal   => 'O1',
+    is_grant    => TRUE,
+    privilege   => 'connect',
+    start_date  => null,
+    end_date    => null
+  );
+commit;
+
+dbms_network_acl_admin.assign_acl (
+    acl        => 'elkapi_http.xml',
+    host       => '10.184.86.12',
+    lower_port => 8443,
+    upper_port => 8443
+  );
+  commit;
+end;
+/
+
+
+Begin
+DBMS_NETWORK_ACL_ADMIN.ASSIGN_WALLET_ACL(
+    acl         => 'elkapi_http.xml',
+    wallet_path => 'file:/ora/11gR2/owm/wallets/elk');
+commit;
+end;
+/
+
+exec DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE('elkapi_http.xml','O1',true, 'use-client-certificates');
+
+begin
+DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(
+    acl         => 'elkapi_http.xml',
+    principal   => 'DIT_APPL',
+    is_grant    => TRUE,
+    privilege   => 'connect');
+commit;
+end;
+/ 
+
+exec DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE('elkapi_http.xml','DIT_APPL',true, 'use-client-certificates');
+commit;

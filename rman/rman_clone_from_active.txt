@@ -1,0 +1,33 @@
+rman target sys/qwaszx12@SIPUR auxiliary sys/qwaszx12@TSIPUR3
+
+
+run {
+allocate channel ch10 type disk;
+allocate channel ch11 type disk;
+allocate channel ch12 type disk;
+allocate channel ch13 type disk;
+allocate channel ch14 type disk;
+allocate channel ch15 type disk;
+allocate channel ch16 type disk;
+allocate channel ch17 type disk;
+allocate auxiliary channel ch0 type DISK;
+allocate auxiliary channel ch1 type DISK;
+allocate auxiliary channel ch2 type DISK;
+allocate auxiliary channel ch3 type DISK;
+allocate auxiliary channel ch4 type DISK;
+allocate auxiliary channel ch5 type DISK;
+allocate auxiliary channel ch6 type DISK;
+allocate auxiliary channel ch7 type DISK;
+DUPLICATE TARGET DATABASE TO TSIPUR3 FROM ACTIVE DATABASE;
+}
+
+
+отключить бекап БД 1:00
+отключить бекап archivelogs 15:00 (отключил)
+отключить сбор статистики (отключил)
+started 7:56
+started archivelog copy 16:50
+
+ended 18:00
+
+

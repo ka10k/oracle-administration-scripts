@@ -1,0 +1,1 @@
+ALTER SYSTEM KILL SESSION 'sid,serial#';

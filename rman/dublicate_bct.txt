@@ -1,0 +1,69 @@
+
+Для дубликации с ASM на ASM и датафайлов OMF, имена которых генерятся сами, навроде users222.444341, используются переменные DB_CREATE_FILE_DEST, DB_RECOVERY_FILE_DEST, а не CONVERT
+
+RMAN-05529: WARNING: DB_FILE_NAME_CONVERT resulted in invalid ASM names; names changed to disk group only.
+Cause: It was not possible to convert ASM Oracle Managed Files names using DB_FILE_NAME_CONVERT parameter. RMAN changed these invalid names to the converted disk group name instead.
+1) use RMAN command SET NEWNAME for each Oracle Managed File. 2) set DB_CREATE_FILE_DEST initialization parameter in auxiliary instance and not specify DB_FILE_NAME_CONVERT
+DB_CREATE_FILE_DEST, DB_RECOVERY_FILE_DEST
+NO CONVERT PARAMETERS IF USING OMF
+
+
+startup nomount pfile='/ora/11gR2/dbs/initTSIPKZ.ora';
+create spfile from pfile;
+shutdown abort
+startup nomount
+alter system set db_create_file_dest ='+SIP_ARCH' scope=spfile;
+alter system set db_recovery_file_dest='+SIP_ARCH' scope=spfile;
+alter system reset db_file_name_convert scope=spfile;
+alter system reset log_file_name_convert scope=spfile;
+alter system set db_recovery_file_dest_size=100G;
+shutdown abort
+startup nomount
+/
+
+
+
+
+rman target sys/XXXXX@SIPKZ catalog rman112/rman@rcat auxiliary /
+
+run {
+set until time "TO_DATE('13/06/2017 02:00:00','DD/MM/YYYY HH24:MI:SS')";
+allocate channel ch0 type disk;
+allocate channel ch1 type disk;
+allocate channel ch2 type disk;
+allocate channel ch3 type disk;
+allocate channel ch4 type disk;
+allocate channel ch5 type disk;
+allocate channel ch6 type disk;
+allocate channel ch7 type disk;
+allocate channel ch8 type disk;
+allocate auxiliary channel ch100 type SBT_TAPE;
+allocate auxiliary channel ch101 type SBT_TAPE;
+allocate auxiliary channel ch102 type SBT_TAPE;
+allocate auxiliary channel ch103 type SBT_TAPE;
+allocate auxiliary channel ch104 type SBT_TAPE;
+allocate auxiliary channel ch105 type SBT_TAPE;
+allocate auxiliary channel ch106 type SBT_TAPE;
+allocate auxiliary channel ch107 type SBT_TAPE;
+allocate auxiliary channel ch108 type SBT_TAPE;
+duplicate target database to TSIPKZ nofilenamecheck;
+}
+
+После восстановление  контрол файл RMAN переводит AUXILIARY базу в mount, после этого нужно отключить BCT (SQL> ALTER DATABASE DISABLE BLOCK CHANGE TRACKING;)
+#- During the datafile restore (after CF restore) , connect to DB (in mount state).
+#- Execute : alter database disable block change tracking;
+SQL> ALTER DATABASE DISABLE BLOCK CHANGE TRACKING;
+
+
+Как только пройдет восстановление и рикавер, прямо перед открытием базы, RMAN опять включит опцию BCT:
+
+Reenabling controlfile options for auxiliary database
+Executing: alter database enable block change tracking
+
+contents of Memory Script:
+{
+   Alter clone database open resetlogs;
+}
+executing Memory Script
+
+database opened

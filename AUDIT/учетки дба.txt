@@ -1,0 +1,70 @@
+declare
+     v_count number;
+begin
+select count(*) into v_count from aud$;
+       if v_count > 100000 then
+           execute immediate 'truncate table aud$';
+       end if;
+end;
+
+
+1.Оренбург +
+
+AFRO
+DBA_MOSCOW
+DBALI
+SIP_MIGR
+
+2.Самара
+
+SIP_MIGR +
+
+3. Нижний Новгород +
+
+SIP_MON
+
+4.Пенза +
+
+SIPTMP
+
+5.Удмуртия +
+
+YDANILOV
+EXP_USER
+SIP_EXP
+PSANNIKOV
+QC
+SIP_S
+
+6.Марий Эл +
+
+ADM (залочена)
+
+7.Ульяновск +
+
+SIPTMP
+SD
+BACKUP
+
+
+8.Чувашия
+
+SIP_W1
+SIP_MIGR
+CH_GUSAROV
+
+
+9. Саратов +
+
+DPBACKUP
+SIP_MON
+
+10.Мордовия
+
+MAXIM
+SYSUSR
+GSV
+
+11.Татарстан
+
+OKUNEV (залочена)

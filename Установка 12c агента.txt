@@ -1,0 +1,44 @@
+
+source /home/oracle/.envAgent
+emctl stop agent
+/ora/Agent11g/agent11g/oui/bin/detachHome.sh
+
+#change vi /home/oracle/.envAgent add /ora/Agent12/agent_inst/bin to PATH
+mkdir /ora/Agent12 && cd /ora/Agent12 && wget --no-check-certificate https://cc.cod.vt.ru:4900/em/install/getAgentImage && chmod +x getAgentImage && ./getAgentImage LOGIN_USER=a.grishin PLATFORM="Linux x86-64" AGENT_BASE_DIR=/ora/Agent12
+
+
+
+/ora/Agent12/agent_inst/bin/emctl status agent
+
+
+./.envAgent11g
+
+/ora/Agent11g/agent11g/oui/bin/detachHome.sh
+
+cd /ora && rm -rf Agent11g
+
+ 
+
+ 
+
+wget --no-check-certificate https://cc.cod.vt.ru:4900/em/install/getAgentImage
+
+chmod +x getAgentImage
+
+
+./getAgentImage LOGIN_USER=a.grishin PLATFORM="Linux x86-64" AGENT_BASE_DIR=/ora/Agent12
+
+ 
+
+
+для HP-UX
+
+./getAgentImage LOGIN_USER=aek PLATFORM="HP-UX Itanium" AGENT_BASE_DIR=/ora/Agent12
+
+логин думаю можно использовать свой, а пароль на соединение connect123
+
+для линукса.
+
+./getAgentImage LOGIN_USER=aek PLATFORM="Linux x86-64" AGENT_BASE_DIR=/ora/Agent12
+
+ 

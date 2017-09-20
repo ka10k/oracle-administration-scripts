@@ -1,0 +1,83 @@
+begin
+for i in (
+-- получаем список системных привелегий которые пользователь теряет при отборе роли dba
+with tbbeg as (
+select 'DBA' usr, null fil from dual union all
+select 'AFRO' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+select 'DBA_MOSCOW' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+select 'DBALI' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+select 'SIP_MIGR' usr, sip_ap.aakpkg_help_filial.whoisthisen('or') fil from dual union all
+
+select 'SIP_MIGR' usr, sip_ap.aakpkg_help_filial.whoisthisen('sm') fil from dual union all
+
+select 'SIP_MON' usr, sip_ap.aakpkg_help_filial.whoisthisen('nn') fil from dual union all
+
+select 'SIPTMP' usr, sip_ap.aakpkg_help_filial.whoisthisen('pn') fil from dual union all
+
+select 'ADM' usr, sip_ap.aakpkg_help_filial.whoisthisen('ml') fil from dual union all
+
+select 'SIPTMP' usr, sip_ap.aakpkg_help_filial.whoisthisen('ul') fil from dual union all
+select 'SD' usr, sip_ap.aakpkg_help_filial.whoisthisen('ul') fil from dual union all
+select 'BACKUP' usr, sip_ap.aakpkg_help_filial.whoisthisen('ul') fil from dual union all
+
+select 'SIP_W1' usr, sip_ap.aakpkg_help_filial.whoisthisen('ch') fil from dual union all
+select 'SIP_MIGR' usr, sip_ap.aakpkg_help_filial.whoisthisen('ch') fil from dual union all
+select 'CH_GUSAROV' usr, sip_ap.aakpkg_help_filial.whoisthisen('ch') fil from dual union all
+
+select 'DPBACKUP' usr, sip_ap.aakpkg_help_filial.whoisthisen('sr') fil from dual union all
+select 'SIP_MON' usr, sip_ap.aakpkg_help_filial.whoisthisen('sr') fil from dual union all
+
+select 'MAXIM' usr, sip_ap.aakpkg_help_filial.whoisthisen('mr') fil from dual union all
+select 'SYSUSR' usr, sip_ap.aakpkg_help_filial.whoisthisen('mr') fil from dual union all
+select 'GSV' usr, sip_ap.aakpkg_help_filial.whoisthisen('mr') fil from dual union all
+
+select 'OKUNEV' usr, sip_ap.aakpkg_help_filial.whoisthisen('tt') fil from dual union all
+select 'YDANILOV' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'EXP_USER' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'SIP_EXP' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'PSANNIKOV' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all
+select 'QC' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual union all 
+select 'SIP_S' usr, sip_ap.aakpkg_help_filial.whoisthisen('ur') fil from dual 
+)
+, tbbegFil as ( -- только филиальские учетки
+  select * from tbbeg 
+  where fil is null or fil  = sip_ap.aakpkg_help_filial.whoami()
+)
+-- grant execute on aakpkg_help_filial to sip_w
+, tbrep (usr, gr, r) as (-- получаем все роли учетки
+  select usr, granted_role gr, 1 r from DBA_ROLE_PRIVS, tbbegFil where grantee = usr and granted_role !='DBA'
+  UNION ALL
+  select usr, dr.granted_role gr, r+1 r
+  from tbrep t, DBA_ROLE_PRIVS dr
+  where t.gr = dr.grantee and dr.granted_role !='DBA'
+)
+
+, tbAllRole_user as  (-- роль + учетка
+  select usr, usr rol from tbbegFil union all
+  select usr, gr from tbrep
+)
+
+, tb_out as ( -- получаем список объектных привелегий для учеток и DBA роли
+select usr, owner ow, table_name tb, privilege priv
+from tbAllRole_user r
+left join DBA_TAB_PRIVS s on r.rol = s.grantee
+where owner is not null
+group by usr, owner, table_name, privilege
+)
+
+, tb_objDba as (select ow, tb, priv from tb_out where usr = 'DBA') 
+, tb_objOther as (select usr, ow, tb, priv from tb_out where usr != 'DBA')
+
+-- высталяем ограничения на usr, которому необходимо сделать.
+select usr, 'AUDIT ' || priv || ' BY '||usr||' BY ACCESS WHENEVER NOT SUCCESSFUL;' AS names
+from tb_objDba d, (select usr from tbbegFil where usr != 'DBA') t
+where not exists(select null from tb_objOther where usr = t.usr and ow = d.ow and tb = d.tb and priv  =d.priv)
+
+) loop
+!!! err от случайного запуска -- 
+
+execute immediate i.names;
+end loop;
+end;
+
+

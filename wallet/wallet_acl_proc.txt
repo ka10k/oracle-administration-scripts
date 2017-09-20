@@ -1,0 +1,42 @@
+BEGIN
+  dbms_network_acl_admin.create_acl (
+    acl         => 'elkapi_http.xml',
+    description => 'HTTP Access',
+    principal   => 'ULN',
+    is_grant    => TRUE,
+    privilege   => 'connect',
+    start_date  => null,
+    end_date    => null
+  );
+commit;
+
+dbms_network_acl_admin.assign_acl (
+    acl        => 'elkapi_http.xml',
+    host       => '10.184.86.12',
+    lower_port => 8443,
+    upper_port => 8443
+  );
+  commit;
+
+
+DBMS_NETWORK_ACL_ADMIN.ASSIGN_WALLET_ACL(
+    acl         => 'elkapi_http.xml',
+    wallet_path => 'file:/ora/11gR2/owm/wallets/elk');
+commit;
+
+DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE('elkapi_http.xml','ULN',true, 'use-client-certificates');
+commit;
+
+
+DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(
+    acl         => 'elkapi_http.xml',
+    principal   => 'DIT_APPL',
+    is_grant    => TRUE,
+    privilege   => 'connect');
+commit;
+
+
+DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE('elkapi_http.xml','DIT_APPL',true, 'use-client-certificates');
+commit;
+END;
+/

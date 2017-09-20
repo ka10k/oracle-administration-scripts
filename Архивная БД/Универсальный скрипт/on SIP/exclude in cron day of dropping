@@ -1,0 +1,1 @@
+10 3 1-24,26-31 * * /home/oracle/all_in_one.sh > /home/oracle/purge_garher.log

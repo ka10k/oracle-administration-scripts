@@ -1,0 +1,2 @@
+select ROUND((SPACE_USED)/1024/1024/1024) "Занято GB", ROUND((SPACE_LIMIT)/1024/1024/1024) "Предел GB", ROUND(((SPACE_LIMIT)-(SPACE_USED))/1024/1024/1024) "Свободно GB"
+from V$recovery_File_Dest

@@ -1,0 +1,7 @@
+--ALTER SYSTEM SET SEC_CASE_SENSITIVE_LOGON = TRUE; --включить чувствительность к регистру паролей
+--AUDIT SESSION; --включить аудит сессий
+--alter user SIP_W identified by values '7C3C2E7D0BBFD8CC'; --сменить пароль по хешу
+--select password, spare4 from sys.user$ where name = 'SIP_W'; --проверить хеш
+--select * from dba_audit_session where RETURNCODE=1017; --сессии с ошибочным паролем
+--NOAUDIT ALL; --отключить аудит
+--truncate table sys.aud$ --зачистить аудит

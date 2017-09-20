@@ -1,0 +1,722 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+
+    <!-- 213.177.98.245 : ww --> 
+
+    <title>Audit DDL Changes</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="audience" content="All">
+    <meta name="author" content="hunbug@astral-consultancy.co.uk">
+    <meta name="copyright" content="astral-consultancy.co.uk 2009">
+    <meta name="expires" content="Never">
+    <meta name="page-type" content="Software Laboratory Article">
+    <meta name="rating" content="General">
+    <meta name="revisit-after" content="10 Days">
+    <meta name="robots" content="index,follow">
+    <meta name="description" content="Audit DDL Changes | Software Laboratory Article">
+    <meta name="keywords" content="HunBug, Software Development, Oracle,Database,Audit,DDL,System Events">
+
+    <link rel="alternate" type="application/rss+xml" title="Project HunBug" href="http://www.astral-consultancy.co.uk/hunbug/adm/hunbug-rss.xml">
+
+    <link rel="shortcut icon" href="http://www.astral-consultancy.co.uk/hunbug/favicon.ico" type="image/ico">
+
+    <link rel="stylesheet" type="text/css" href="audit_ddl_files/hunbug.css">
+    <script type="text/javascript" src="audit_ddl_files/hunbug.js"></script>
+ 
+    
+ 
+  <script id="objHTMLFormElementPrototype">try{   document.objHTMLFormElementPrototype = new Object();   document.objHTMLFormElementPrototype.submit = HTMLFormElement.prototype.submit;   HTMLFormElement.prototype.submit = function(AEvent)   {      var spEvent = document.createEvent('Event');      spEvent.initEvent('sp_submit', true, true);      this.dispatchEvent(spEvent);      document.objHTMLFormElementPrototype.submit.apply(this);   };}catch(e){  alert('Error during attach to HTMLFormElement.prototype.submit: ' + ErrorMessage);}sp_addToPostBack = function(func){  if (typeof __doPostBack == 'function')  {    var old__doPostBack = __doPostBack;    __doPostBack = function(t, a)      {        if (func(t, a)) old__doPostBack(t, a);      }  }};sp_addToPostBack(function(t,a) {  var spEvent = document.createEvent('Event');  spEvent.initEvent('sp_submit', true, true);  this.dispatchEvent(spEvent);  return true;});</script></head>
+  
+  <body spsourceindexset="666" spisdocumentcomplete="666">
+  
+    <div id="body">
+
+      <div id="header">
+        <h1>Project HunBug</h1>
+        <h2>Publishing Software Development Notes</h2>
+      </div>
+
+      <div id="pagefold">
+        <div>
+          <!--<img src="/hunbug/img/store.gif" onclick="showStore()"/>-->
+          <a href="http://projectwownow.blogspot.com/"><img src="audit_ddl_files/wownow.gif"></a>
+        </div>
+      </div>
+
+      <table id="maintable">
+        <tbody><tr>
+
+          <td id="menu">
+            <div class="menupanel">
+              <div class="menuheader">
+                HUNBUG MENU
+              </div>
+              <div class="menusegment">
+                <div><a class="blacklink" href="http://www.astral-consultancy.co.uk/index.php/it/">Astral IT Home</a></div>
+                <div id="M-"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi">HunBug Home</a></div>
+                <div><a class="blacklink" href="" onclick="return bookmarkPage();">Bookmark Page <img src="audit_ddl_files/bookmark.png"></a></div>
+                <div><a class="blacklink" href="http://www.astral-consultancy.co.uk/hunbug/adm/hunbug-rss.xml">Subscribe to RSS <img src="audit_ddl_files/rss.png"></a></div>
+                <div><a class="blacklink" href="" onclick="return comments('block','side');">Leave Comments <img src="audit_ddl_files/comments.png"></a></div>
+              </div>
+            </div>
+            <div class="menupanel">
+              <div class="menuheader">
+                SEARCH ARTICLES
+              </div>
+              <form sourceindex="0" method="post" action="/cgi-bin/hunbug/search.cgi">
+              <input name="base" value="doco" type="hidden">
+              <input name="rbase" value="/cgi-bin/hunbug/doco.cgi?" type="hidden">
+              <input sourceindex="1" id="searchtext" maxlength="256" name="sv" type="text">
+              <input sourceindex="2" id="searchsite" value="Search" name="submit" type="submit">
+              </form>
+            </div>
+            <div class="menupanel">
+              <div>
+          </div>
+          <div class="menusegment">
+            <div class="menuheader">
+              JAVASCRIPT
+            </div>
+            <div id="M-JS-Ajax"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?JS-Ajax">Ajax</a></div>
+            <div id="M-JS-HowTo"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?JS-HowTo">How To</a></div>
+            <div id="M-JS-Essentials"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?JS-Essentials">Essentials</a></div>
+          </div>
+          <div class="menusegment">
+            <div class="menuheader">
+              ORACLE DATABASE
+            </div>
+            <div style="border-right: 5px solid steelblue; width: 140px; background-color: lightblue;" id="M-OraDb-Auditing"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?OraDb-Auditing">Auditing</a></div>
+            <div id="M-OraDb-HowTo"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?OraDb-HowTo">How To</a></div>
+            <div id="M-OraDb-Java"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?OraDb-Java">Java Solutions</a></div>
+            <div id="M-OraDb-Security"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?OraDb-Security">Security</a></div>
+            <div id="M-OraDb-Tuning"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?OraDb-Tuning">Tuning</a></div>
+            <div id="M-OraDb-Utilities"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?OraDb-Utilities">Utility Scripts</a></div>
+          </div>
+          <div class="menusegment">
+            <div class="menuheader">
+              ORACLE FORMS
+            </div>
+            <div id="M-OraFrm-Utilities"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?OraFrm-Utilities">Utility Scripts</a></div>
+          </div>
+          <div class="menusegment">
+            <div class="menuheader">
+              SERVER SCRIPT
+            </div>
+            <div id="M-Perl-Reference"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?Perl-Reference">Perl Reference</a></div>
+            <div id="M-Perl-Routines"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?Perl-Routines">Perl Routines</a></div>
+          </div>
+          <div class="menusegment">
+            <div class="menuheader">
+              WINDOWS SCRIPT
+            </div>
+            <div id="M-MsWin-DataManip"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?MsWin-DataManip">Data Manipulation</a></div>
+          </div>
+          <div class="menusegment">
+            <div class="menuheader">
+              XTRAS
+            </div>
+            <div id="M-Www-Tools"><a class="blacklink" href="http://www.astral-consultancy.co.uk/cgi-bin/hunbug/menu.cgi?Www-Tools">Www Tools</a></div>
+
+              </div>
+              <script type="text/javascript">
+                document.getElementById("M-OraDb-Auditing").style.borderRight="5px solid steelblue";
+                document.getElementById("M-OraDb-Auditing").style.width="140px";
+                document.getElementById("M-OraDb-Auditing").style.backgroundColor="lightblue";
+              </script>
+            </div>
+            <div id="menubookmarks" class="menupanel">
+              <div class="menuheader">
+                SOCIAL BOOKMARKS
+              </div>
+              <a href="http://del.icio.us/post" class="blacklink" onclick="window.open('http://del.icio.us/post?v=4&amp;noui&amp;jump=close&amp;url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title), 'delicious','toolbar=no,width=700,height=400'); return false;">Del.icio.us</a><br>
+              <a href="http://digg.com/submit" class="blacklink" onclick="window.open('http://digg.com/submit?phase=2&amp;url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title)+'&amp;topic=programming'); return false;">Digg This</a><br>
+              <a href="http://fusion.google.com/add" class="blacklink" onclick="window.open('http://fusion.google.com/add?feedurl=http%3A//www.astral-consultancy.co.uk/hunbug/adm/hunbug-rss.xml'); return false;">My Google</a><br>
+              <a href="http://reddit.com/submit" class="blacklink" onclick="window.open('http://reddit.com/submit?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title)); return false;">Reddit</a><br>
+              <a href="http://www.stumbleupon.com/submit" class="blacklink" onclick="window.open('http://www.stumbleupon.com/submit?url='+encodeURIComponent(location.href)+'&amp;title='+encodeURIComponent(document.title)); return false;">Stumbleupon</a><br>
+            </div>
+            <div id="translate">
+              <script language="JavaScript1.2" src="audit_ddl_files/translate_engl.htm"></script>
+            </div>
+          </td>
+
+          <td rowspan="2">
+            <div id="docoshadow" class="shadow">
+              <div id="dococontent" class="content">
+
+                <!--HeaderStart-->
+ <div id="articlebody">
+ <h1>Audit DDL Changes</h1>
+ <h6>A HunBug Document</h6>
+ <div class="articlesection"><b>Document No.:</b>
+ 11090<br>
+ 
+ 
+ <b>Database Version:</b> Oracle 9i<br>
+ 
+ 
+ <b>Last Updated:</b> 01 Jan 2006<br>
+ 
+ 
+ <b>Author:</b> HunBug<br>
+ 
+ 
+ </div>
+ <!--ArticleStart--><div class="banner"><div class="ringbinder">
+   <div class="ringbinderpage ringbinderpageleft">
+     <script type="text/javascript"><!--
+     google_ad_client = "pub-3482546462081793";
+     google_ad_width = 336;
+     google_ad_height = 280;
+     google_ad_format = "336x280_as";
+     google_ad_type = "text_image";
+     //2007-10-14: HunBug-Worldwide
+     google_ad_channel = "1144172091";
+     google_color_border = "FFFFFF";
+     google_color_bg = "FFFFFF";
+     google_color_link = "0088CC";
+     google_color_text = "000000";
+     google_color_url = "0088CC";
+     //-->
+     </script>
+     <script type="text/javascript" src="audit_ddl_files/show_ads.js">
+     </script>
+   </div>
+   <div class="ringbinderpage ringbinderpageright">
+     <script type="text/javascript"><!--
+     google_ad_client = "pub-3482546462081793";
+     google_ad_width = 336;
+     google_ad_height = 280;
+     google_ad_format = "336x280_as";
+     google_ad_type = "text_image";
+     //2007-10-14: HunBug-Worldwide
+     google_ad_channel = "1144172091";
+     google_color_border = "FFFFFF";
+     google_color_bg = "FFFFFF";
+     google_color_link = "0088CC";
+     google_color_text = "000000";
+     google_color_url = "0088CC";
+     //-->
+     </script>
+     <script type="text/javascript" src="audit_ddl_files/show_ads.js">
+     </script>
+   </div>
+ </div></div>
+ <div class="articlesection">
+ <p>Auditing changes within the database are becoming more and
+ more important. As well as auditing changes to data, auditing DDL
+ changes can be just as critical. This allows the DBA to not only know
+ what changes have been made but also what haven’t. Being able
+ to see what changes have been made to the database can make debugging
+ much quicker.<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ This solution consists of two tables, one sequence and one trigger.<br>
+ 
+ 
+ &nbsp;<big style="font-weight: bold; font-style: italic;"><br>
+ 
+ 
+ The Tables and Sequence</big><br>
+ 
+ 
+ </p>
+ 
+ 
+ <div class="articlecodeexample">CREATE TABLE ddl_events<br>
+ 
+ 
+ (
+ eventId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ NUMBER(10,0),<br>
+ 
+ 
+ &nbsp;
+ eventDate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ DATE,<br>
+ 
+ 
+ &nbsp; oraLoginUser&nbsp;&nbsp;&nbsp;&nbsp;
+ VARCHAR2(30),<br>
+ 
+ 
+ &nbsp; oraDictObjName&nbsp;&nbsp; VARCHAR2(30),<br>
+ 
+ 
+ &nbsp; oraDictObjOwner&nbsp; VARCHAR2(30),<br>
+ 
+ 
+ &nbsp; oraDictObjType&nbsp;&nbsp; VARCHAR2(30),<br>
+ 
+ 
+ &nbsp;
+ oraSysEvent&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ VARCHAR2(30),<br>
+ 
+ 
+ &nbsp;
+ machine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ VARCHAR2(64),<br>
+ 
+ 
+ &nbsp;
+ program&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ VARCHAR2(64),<br>
+ 
+ 
+ &nbsp;
+ osuser&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ VARCHAR2(30) );<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ CREATE TABLE ddl_events_sql<br>
+ 
+ 
+ (
+ eventId&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ NUMBER(10,0),<br>
+ 
+ 
+ &nbsp;
+ sqlLine&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ NUMBER(10,0),<br>
+ 
+ 
+ &nbsp;
+ sqlText&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ VARCHAR2(4000) );<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ CREATE SEQUENCE dsq_ddlEvents START WITH 1000;&nbsp;<br>
+ 
+ 
+ </div>
+ 
+ 
+ The parent table ddl_events stores data about the DDL event<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; eventId : Unique key generated
+ by the sequence.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; eventDate : Populated with
+ SYSDATE.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; oraLoginUser : The login
+ username taken from the ORA_LOGIN_USER function.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; oraDictObjName : The name of
+ the event object taken from the ORA_DICT_OBJ_NAME function.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; oraDictObjOwner : The owner of
+ the event object taken from the ORA_DICT_OBJ_OWNER function.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; oraDictObjType : The type of
+ the event object taken from the ORA_DICT_OBJ_TYPE function.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; oraSysEvent : The type of
+ event, EG Create, Alter, Delete. Taken from the ORA_SYS_EVENT function.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; machine : The name of the
+ machine the event was issued from. Taken from v_$session.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; program : The name of the
+ program use to issue the command. Taken from v_$session.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; osuser : The operating system
+ user name. Taken from v_$session.<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ The ddl_events_sql table stores the sql text from the command. This is
+ a child table of ddl_events with the eventId being the foreign key.
+ EventId and sqlLine can be used to uniquely identify a record.<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; eventId : Link to ddl_events<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; sqlLine : The line number of
+ the executed command<br>
+ 
+ 
+ •&nbsp;&nbsp;&nbsp; sqlText : An sql text line of
+ the command. Taken from the ORA_SQL_TXT function.<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ <big style="font-weight: bold; font-style: italic;">The
+ Trigger</big><br>
+ 
+ 
+ <div class="articlecodeexample">
+ CREATE OR REPLACE TRIGGER dtr_ddlEvents<br>
+ 
+ 
+ AFTER DDL ON DATABASE<br>
+ 
+ 
+ DECLARE<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ &nbsp; l_eventId&nbsp;&nbsp;&nbsp; NUMBER(10,0);<br>
+ 
+ 
+ &nbsp; l_sqlText&nbsp;&nbsp;&nbsp; ORA_NAME_LIST_T;<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ BEGIN<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ &nbsp; SELECT dsq_ddlEvents.NEXTVAL INTO l_eventId FROM SYS.DUAL;<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ &nbsp; INSERT INTO ddl_events<br>
+ 
+ 
+ &nbsp; ( SELECT l_eventId,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SYSDATE,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ ORA_LOGIN_USER,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ ORA_DICT_OBJ_NAME,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ ORA_DICT_OBJ_OWNER,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ ORA_DICT_OBJ_TYPE,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ ORA_SYSEVENT,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ machine,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ program,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ osuser<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FROM SYS.DUAL,<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ SYS.V_$SESSION<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp; WHERE
+ SYS_CONTEXT('USERENV','SESSIONID' ) = audsid(+) );<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ &nbsp; FOR l IN 1..ORA_SQL_TXT(l_sqlText) LOOP<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; INSERT INTO ddl_events_sql<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; ( eventId, sqlLine, sqlText )<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; VALUES<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; ( l_eventId, l, l_sqlText(l) );<br>
+ 
+ 
+ &nbsp; END LOOP;<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ END;<br>
+ 
+ 
+ /<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ </div>
+ 
+ 
+ Auditing the DDL changes is made easy by the DDL triggers. This
+ solution uses and AFTER DDL ON DATABASE clause. This will audit all the
+ changes made on the database. If you are just looking to audit a
+ particular schema the AFTER DDL ON SCHEMA clause could be used instead.<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ The trigger inserts the data into the into the ddl_events table with
+ data from built-in functions and the v_$session view. The outer join on
+ the v_$session view enables the bulti-in functions to still populate
+ for background processes.<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ The ddl_events_sql table is then populated by the ORA_SQL_TXT function.
+ The loop populates the ddl_events_sql table for each line of the
+ statement.<br>
+ 
+ 
+ <br>
+ 
+ 
+ <big style="font-weight: bold; font-style: italic;">Variations</big><br>
+ 
+ 
+ If auditing the database is too much, a single schema can be audited by
+ using AFTER DDL ON SCHEMA in place of AFTER DDL ON DATABASE.<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ If auditing the sql text gives too much data, this code can easily be
+ removed, or modified so that the first 4000 characters is inserted into
+ the ddl_events table.<br>
+ 
+ 
+ &nbsp;<br>
+ 
+ 
+ The sql text code above includes auditing for password changes. As the
+ password is sensitive you may want to hide it from the log. You can do
+ this by modifying the sql text loop as below.<br>
+ 
+ 
+ <div class="articlecodeexample">
+ &nbsp;&nbsp; FOR l IN 1..ORA_SQL_TXT(l_sqlText) LOOP<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; IF&nbsp; ORA_DICT_OBJ_TYPE = 'USER'<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; AND
+ INSTR(UPPER(l_sqlText(l)),'IDENTIFIED BY') != 0<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; THEN<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; l_sqlText(l) :=
+ SUBSTR(l_sqlText(l),1,INSTR(UPPER(l_sqlText(l)),'IDENTIFIED
+ BY')+13)||'*';<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; END IF;<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; INSERT INTO ddl_events_sql<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; ( eventId, sqlLine, sqlText )<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; VALUES<br>
+ 
+ 
+ &nbsp;&nbsp;&nbsp; ( l_eventId, l, l_sqlText(l) );<br>
+ 
+ 
+ &nbsp; END LOOP;<br>
+ 
+ 
+ </div>
+ 
+ 
+ The additional if statement checks for user statements that contain
+ IDENTIFIED BY clauses, the text to the right of the clause is then
+ replaced with an asterisk.<br>
+ 
+ 
+ <br>
+ 
+ 
+ </div>
+ <!--ReadingStart-->
+ <div class="articlesection">
+ <h2>Further Reading</h2>
+ 
+ 
+ <br>
+ 
+ 
+ <a href="http://asktom.oracle.com/pls/ask/f?p=4950:8:17654537999670990917::NO::F4950_P8_DISPLAYID,F4950_P8_CRITERIA:267415465220">AskTom</a>: Writing DDL triggers<br>
+ 
+ 
+ <a href="http://www.dbazine.com/oracle/or-articles/burleson7">DBAzine.com</a>: Article on system event auditing <br>
+ 
+ 
+ <br>
+ 
+ 
+ </div>
+ 
+ 
+ </div>
+ 
+ 
+ 
+ 
+
+                <div class="banner">
+                  <div class="pinnote">
+   <div class="pinnotead">
+ <script type="text/javascript"><!--
+ google_ad_client = "pub-3482546462081793";
+ /* 336x280, created 03/02/08 */
+ google_ad_slot = "7576546684";
+ google_ad_width = 336;
+ google_ad_height = 280;
+ //-->
+ </script>
+ <script type="text/javascript" src="audit_ddl_files/show_ads.js">
+ </script>
+   </div>
+ </div>
+                </div>
+
+                <div id="endoptions">
+                  <a href="" onclick="return bookmarkPage(); return false;">Bookmark Page <img src="audit_ddl_files/bookmark.png"></a>
+                  <a href="http://www.astral-consultancy.co.uk/hunbug/adm/hunbug-rss.xml">Subscribe to RSS <img src="audit_ddl_files/rss.png"></a>
+                  <a href="" onclick="return comments('block','end');">Leave Comments <img src="audit_ddl_files/comments.png"></a>
+                  <div id="rating" class="rating" onmouseout="ratingOver(0);"><span>Rate This Page: </span>
+                      <img id="rating1" src="audit_ddl_files/star-white.png" onmouseover="ratingOver(1);" onclick="ratingClick('rating=1&amp;page=11090&amp;code=741324494736');"><img id="rating2" src="audit_ddl_files/star-white.png" onmouseover="ratingOver(2);" onclick="ratingClick('rating=2&amp;page=11090&amp;code=741324494736');"><img id="rating3" src="audit_ddl_files/star-white.png" onmouseover="ratingOver(3);" onclick="ratingClick('rating=3&amp;page=11090&amp;code=741324494736');"><img id="rating4" src="audit_ddl_files/star-white.png" onmouseover="ratingOver(4);" onclick="ratingClick('rating=4&amp;page=11090&amp;code=741324494736');"><img id="rating5" src="audit_ddl_files/star-white.png" onmouseover="ratingOver(5);" onclick="ratingClick('rating=5&amp;page=11090&amp;code=741324494736');">
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td id="menulower"> <!--
+            <div id="skyscrapershadow" class="shadow">
+              <div id="skyscraperad" class="content"><script language="javascript">
+ var uri = 'http://impgb.tradedoubler.com/imp?type(img)g(138362)a(1286242)' + new String (Math.random()).substring (2, 11);
+ document.write('<a href="http://clkuk.tradedoubler.com/click?p=2554&a=1286242&g=138362" target="_blank"><img src="'+uri+'" border=0></a>');
+ </script></div>
+            </div> -->
+          </td>
+
+        </tr>
+      </tbody></table>
+
+      <div id="footer">
+        <p>©2009 Astral Consultancy Ltd</p>
+        <img src="audit_ddl_files/projecthunbug.gif">
+        <iframe name="hunbughide" height="0" width="0"></iframe>
+      </div>
+
+    </div>
+
+    <div id="store">
+      <div id="storeheader">
+        HunBug Store
+        <input sourceindex="3" value="Close" onclick="hideStore();" type="button">
+      </div>
+      <div id="storecontents"></div>
+    </div>      
+
+    <div id="hunbugcomment">
+      <form sourceindex="4" id="commentform" name="commentform" method="post" action="/lib/postcomment.php" target="hunbughide">
+        <label for="contactemail">Email (Optional):</label><br>
+        <input sourceindex="5" id="contactemail" name="contactemail" maxlength="75" size="60" type="text"><br>
+        <label for="contactcomments">Comment:</label><br>
+        <textarea sourceindex="6" id="contactcomments" name="contactcomments" rows="10" cols="50" onkeydown="comments('update');" onkeyup="comments('update');"></textarea>
+        <br>
+        <br>
+        <img id="captchaimage" src="audit_ddl_files/loading.gif">
+        <label for="contactsecurity">Enter Code:</label>
+        <input sourceindex="7" id="contactsecurity" name="contactsecurity" type="text"><br>
+        <br>
+        <input sourceindex="8" id="commentcount" readonly="readonly" size="30" type="text">
+        <br>
+        Comments are all individually read, none are automatically posted to the site.<br>
+        <input sourceindex="9" id="submit" name="submit" value="Submit Comment" onclick="comments('none');" type="submit">
+        <input sourceindex="10" id="cancel" name="cancel" value="Cancel" onclick="comments('none');" type="button">
+        <input name="contactkey" value="741324494736" type="hidden">
+      </form>
+    </div>
+    
+    
+    
+    <!-- GoogleAnalyticsStart -->
+    <script src="audit_ddl_files/urchin.js" type="text/javascript"></script>
+    <script type="text/javascript">
+     _uacct = "UA-797454-1";
+     urchinTracker();
+    </script>
+    <!-- GoogleAnalyticsEnd -->
+  
+  
+
+
+</body></html>

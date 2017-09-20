@@ -1,0 +1,16 @@
+ CREATE OR REPLACE TRIGGER "SYS"."SYS$_000001"
+  BEFORE INSERT OR DELETE
+  ON CER_PARAM.PARAMETER
+  FOR EACH ROW
+BEGIN
+  IF :NEW.USE = 1 AND :NEW.UV IS NULL
+  THEN
+    RAISE_APPLICATION_ERROR(-20001, '¬ставка запрещена, параметр по умолчанию отсутствует!');
+  END IF;
+  IF deleting
+  THEN
+    RAISE_APPLICATION_ERROR(-20001, '”даление параметров запрещено!');
+  END IF;
+END;
+
+ALTER TRIGGER "SYS"."SYS$_000001" ENABLE

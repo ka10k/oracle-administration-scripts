@@ -1,0 +1,55 @@
+---сбор статистики по схеме
+BEGIN
+  SYS.DBMS_STATS.GATHER_SCHEMA_STATS (
+     OwnName           => 'SIP_SR_OLD'
+    ,Granularity       => 'ALL'
+    ,Options           => 'GATHER'
+    ,Gather_Temp       => FALSE
+    ,Estimate_Percent  => NULL
+    ,Method_Opt        => 'FOR ALL COLUMNS SIZE 1'
+    ,Degree            => 6
+    ,Cascade           => TRUE
+    ,No_Invalidate     => FALSE);
+END;
+/
+
+BEGIN
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_01', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_02', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_03', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_04', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_05', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_06', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_07', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_SERVICES', partname => 'PART2015_08', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+END;
+/
+
+
+
+BEGIN
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_01', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_02', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_03', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_04', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_05', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_06', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_07', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_SERVICES', partname => 'PART2015_08', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+END;
+/
+
+
+
+BEGIN
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_WTMPS_ARCHIVE', partname => 'PART2015_06', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_SR', tabname => 'TB_WTMPS_ARCHIVE', partname => 'PART2015_07', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>6);
+END;
+/
+
+
+BEGIN
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_WTMPS_ARCHIVE', partname => 'PART2015_06', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+DBMS_STATS.GATHER_TABLE_STATS(ownname => 'SIP_W', tabname => 'TB_WTMPS_ARCHIVE', partname => 'PART2015_07', cascade => TRUE, ESTIMATE_PERCENT => NULL, granularity => 'PARTITION',DEGREE=>8);
+END;
+/

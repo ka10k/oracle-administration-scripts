@@ -1,0 +1,251 @@
+expdp sip_w/sip_w DIRECTORY=EXPDP1 SCHEMAS=SIP_W,SIP_IBS STATUS=60 DUMPFILE=meta0_%U.dmp,meta1_%U.dmp  COMPRESSION=NONE FILESIZE=10G PARALLEL=1 CONTENT=METADATA_ONLY LOGFILE=export-meta.log
+expdp sip_w/sip_w DIRECTORY=EXPDP1 SCHEMAS=SIP_W,SIP_IBS STATUS=60 DUMPFILE=startip0_%U.dmp,startip1_%U.dmp  COMPRESSION=NONE FILESIZE=10G PARALLEL=2
+
+startip0_23.dmp
+startip1_22.dmp
+
+https://sites.google.com/site/oracledbnote/datapump
+
+
+CREATE OR REPLACE DIRECTORY export AS '/home/oracle/Desktop/chr'
+
+CREATE OR REPLACE DIRECTORY export AS '/db/upload/chr2'
+
+CREATE OR REPLACE DIRECTORY export AS '/db/upload/chr20150121'
+
+impdp \'/ as sysdba\' directory=export dumpfile=meta0_01.dmp,meta1_01.dmp
+
+impdp \'/ as sysdba\' directory=export dumpfile=meta0_%U.dmp,meta1_%U.dmp logfile=imp_meta.log sqlfile=imp_meta.sql parallel=2
+
+
+impdp \'/ as sysdba\' directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_1.log sqlfile=imp_1.sql parallel=2
+
+
+
+
+REMAP_TABLESPACE=(src1:dst1,src2:dst1,src3:dst1,src4:dst1)
+
+REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP
+
+
+impdp \'/ as sysdba\' directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_2.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=2
+
+1).
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full_meta.dmp full=y content=METADATA_ONLY logfile=imp_log.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=siptypes-www.dmp logfile=www_imp_log.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1
+
+(не прошло)
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=startip_imp_log.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2
+(сделал транкейт)
+source /home/oracle/.env11gR2_TSIPCHR
+export NLS_LANG=AMERICAN_AMERICA.UTF8
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=startip_imp_log.log table_exists_action=TRUNCATE REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2
+(проблемы с триггерами)
+
+
+2).
+
+1. expdp full=y
+2. impdp full=y EXCLUDE=constraint, ref_constraint, index, statistics
+3. impdp full=y INCLUDE=constraint, ref_constraint, index sqlfile=metadata.sql --получу скрипт с ограничениями, индексами
+4. Ручками запущу скрипт metadata.sql для создания ограничений/индексов.
+EXCLUDE=TRIGGER
+EXCLUDE=PROCEDURE
+grant
+view,package,function
+
+table_exists_action=APPEND
+
+export NLS_LANG=AMERICAN_AMERICA.CL8MSWIN1251
+------------------
+Что пробуем?
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full_meta.dmp full=y content=METADATA_ONLY INCLUDE=USER,ROLE logfile=imp_fullmeta_ex_log.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1 sqlfile=user_role.sql
+
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full_meta.dmp full=y content=METADATA_ONLY EXCLUDE=trigger,constraint,ref_constraint,index,statistics,procedure,package,function,materialized_view,job logfile=imp_fullmeta_ex_log.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=siptypes-www.dmp logfile=imp_www_ex_log.log EXCLUDE=trigger,constraint,ref_constraint,index,statistics,procedure,package,function,materialized_view,job REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_startip_ex_log.log EXCLUDE=trigger,constraint,ref_constraint,index,statistics,materialized_view,job table_exists_action=TRUNCATE REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2
+
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_startip_in_log.log INCLUDE=trigger,constraint,ref_constraint,index,statistics,procedure,package,function,job REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2 sqlfile=imp_startip_in.sql
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=siptypes-www.dmp logfile=imp_www_in_log.log INCLUDE=trigger,constraint,ref_constraint,index,statistics,procedure,package,function REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1 sqlfile=imp_www_in.sql
+
+
+
+---new------------
+EXCLUDE=INDEX,CONSTRAINT,REF_CONSTRAINT,TRIGGER
+STATISTICS 
+drop user muz cascade;
+CREATE OR REPLACE DIRECTORY export AS '/db/upload/chr2';
+CREATE OR REPLACE DIRECTORY export AS '/db/backup';
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full_meta.dmp full=y INCLUDE=USER,ROLE logfile=imp_fullmeta_inur_log.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1 
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=siptypes-www.dmp logfile=imp_www_log.log REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=1
+не скомпиллился SIP_TYPES.TTBLUS (из-за CT_USERS)
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_startip_ex_log.log SCHEMAS=SIP_W TABLE_EXISTS_ACTION=APPEND EXCLUDE=INDEX REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2
+-------------------------------------------------------
+ошибки:
+нужно было EXCLUDE=INDEX,STATISTICS 
+RA-39083: Object type ALTER_FUNCTION failed to create with error:
+ORA-04052: error occurred when looking up remote object CH_APPL.N_CONTENT_TREATY@START_APPL
+ORA-00604: error occurred at recursive SQL level 3
+ORA-12170: TNS:Connect timeout occurred
+Failing sql is:
+ALTER FUNCTION "SIP_W"."TARAS_USRCONTPHN"   COMPILE     PLSQL_OPTIMIZE_LEVEL=  2    PLSQL_CODE_TYPE=  INTERPRETED    PLSQL_DEBUG=  TRUE    PLSCOPE_SETTINGS=  '' REUSE SETTINGS TIMESTAMP '2014-02-06 11:30:28'
+ALTER PROCEDURE "SIP_W"."SP_NAUMEN"   COMPILE     PLSQL_OPTIMIZE_LEVEL=  2    PLSQL_CODE_TYPE=  INTERPRETED    PLSQL_DEBUG=  FALSE    PLSCOPE_SETTINGS=  '' REUSE SETTINGS TIMESTAMP '2014-01-29 04:51:16'
+ALTER PROCEDURE "SIP_W"."TAR_SVODTRAFF_ARC"
+ALTER PROCEDURE "SIP_W"."TEST_CLOB"
+ALTER PROCEDURE "SIP_W"."SP_MAIL_TMP"
+ALTER PROCEDURE "SIP_W"."NACISL_NEW"
+ALTER PACKAGE "SIP_W"."LOYALITY_PKG"
+ALTER PACKAGE "SIP_W"."PG_NAUMEN"
+ALTER PACKAGE "SIP_W"."WRAPPER_AJAX
+ALTER PACKAGE "SIP_W"."TECH_VOSM_PKG"
+ALTER PACKAGE "SIP_W"."WRAPPER_MIX"
+ALTER PACKAGE "SIP_W"."WRAPPER_MAIL"
+ORA-39083: Object type REF_CONSTRAINT failed to create with error:
+ORA-02298: cannot validate (SIP_W.TWSC_TWSA_FK) - parent keys not found
+Failing sql is:
+ALTER TABLE "SIP_W"."TB_WTMPS_SESSION_CHARGES" ADD CONSTRAINT "TWSC_TWSA_FK" FOREIGN KEY ("TWSC_TWSA_ID") REFERENCES "SIP_W"."TB_WTMPS_SESSIONS_ARCHIVE" ("TWSA_N") ENABLE
+ORA-39083: Object type REFRESH_GROUP failed to create with error:
+ORA-23421: job number 23733 is not a job in the job queue
+Failing sql is:
+ BEGIN dbms_refresh.make('"SIP_W"."RADIUS_SERVICES$V"',list=>null,next_date=>null,interval=>null,implicit_destroy=>TRUE,lax=>FALSE,job=>23733,rollback_seg=>NULL,push_deferred_rpc=>TRUE,refresh_after_errors=>FALSE,purge_option => 1,parallelism => 0,heap_size => 0);
+dbms_refresh.add(name=>'"SIP_W"."RADIUS_SERVICES$V"',list=>'"SIP_W"."RADIUS_SERVICES$V"',siteid=>0,export_d
+-----------------------------------------
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_startip_ex_log.log SCHEMAS=SIP_IBS TABLE_EXISTS_ACTION=APPEND EXCLUDE=INDEX,STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2
+----------ошибки-----------------------------
+Processing object type SCHEMA_EXPORT/DB_LINK
+ORA-31685: Object type DB_LINK:"SIP_IBS"."DVP.US.ORACLE.COM" failed due to insufficient privileges. Failing sql is:
+CREATE DATABASE LINK "DVP.US.ORACLE.COM"  CONNECT TO "APPL" IDENTIFIED BY VALUES ':1'  USING 'DVP'
+ORA-31685: Object type DB_LINK:"SIP_IBS"."BBB2.US.ORACLE.COM" failed due to insufficient privileges. Failing sql is:
+CREATE DATABASE LINK "BBB2.US.ORACLE.COM"  CONNECT TO "IBS" IDENTIFIED BY VALUES ':1'  USING 'mercury'
+ORA-31685: Object type DB_LINK:"SIP_IBS"."ORCL2.US.ORACLE.COM" failed due to insufficient privileges. Failing sql is:
+CREATE DATABASE LINK "ORCL2.US.ORACLE.COM"  CONNECT TO "IBS" IDENTIFIED BY VALUES ':1'  USING 'mercury'
+----------------------------------------------------
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_startip_indx_log.log SCHEMAS=SIP_W INCLUDE=INDEX REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2 sqlfile=sipw_indx.sql
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=startip0_%U.dmp,startip1_%U.dmp logfile=imp_startip_ex_log.log SCHEMAS=SIP_IBS INCLUDE=INDEX REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=2 sqlfile=sipibs_indx.sql
+
+
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=imp_sipw2_ex_log.log SCHEMAS=SIP_W2 TABLE_EXISTS_ACTION=APPEND EXCLUDE=INDEX,STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=imp_sipw2_indx_log.log SCHEMAS=SIP_W2 INCLUDE=INDEX REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4 sqlfile=sipw2_indx.sql
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=GRANT_log.log INCLUDE=GRANT REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4 sqlfile=GRANT.sql
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=rep_chr.log SCHEMAS=REP_CHR TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=january.log SCHEMAS=JANUARY TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=INTGR_CRM_STARTIP.log SCHEMAS=INTGR_CRM_STARTIP TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_W1.log SCHEMAS=SIP_W1 TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=DIT_APPL.log SCHEMAS=DIT_APPL TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_ENAZA.log SCHEMAS=SIP_ENAZA TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_ADD.log SCHEMAS=SIP_ADD TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_CNTT.log SCHEMAS=SIP_CNTT TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=MIS_RO.log SCHEMAS=MIS_RO TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=DIT.log SCHEMAS=DIT TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_LDR10.log SCHEMAS=SIP_LDR10 TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_MIGR.log SCHEMAS=SIP_MIGR TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_NAUMEN.log SCHEMAS=SIP_NAUMEN TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=CH_WEB.log SCHEMAS=CH_WEB TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIPTMP.log SCHEMAS=SIPTMP TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=VTMIS.log SCHEMAS=VTMIS TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_MIAS.log SCHEMAS=SIP_MIAS TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp system/qwaszx12@TSIPCHR directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=STA.log SCHEMAS=STA TABLE_EXISTS_ACTION=APPEND EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+
+ 
+
+
+
+BEGIN EXEC SYS.DBMS_STATS.GATHER_DATABASE_STATS(degree => 8); END;/
+
+
+
+
+PROFILE,
+
+NEW SERVER
+CREATE OR REPLACE DIRECTORY export AS '/db/imp';
+
+ 
+
+impdp \'/ as sysdba\' DIRECTORY=export content=METADATA_ONLY DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=user_role_grant.log INCLUDE=USER,ROLE,GRANT,SYSTEM_GRANT,PROC_SYSTEM_GRANT,ROLE_GRANT,DEFAULT_ROLE,TABLESPACE_QUOTA,DB_LINK,SYNONYM REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+impdp \'/ as sysdba\' DIRECTORY=export DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=SIP_TYPES.log SCHEMAS=SIP_TYPES EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+impdp \'/ as sysdba\' DIRECTORY=export DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=SIP_WWW.log SCHEMAS=SIP_WWW EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+impdp \'/ as sysdba\' DIRECTORY=export DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=SIP_W.log SCHEMAS=SIP_W EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+impdp \'/ as sysdba\' DIRECTORY=export DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=SIP_IBS.log SCHEMAS=SIP_IBS EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+impdp \'/ as sysdba\' DIRECTORY=export DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=INTGR_CRM_STARTIP.log SCHEMAS=INTGR_CRM_STARTIP EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+impdp \'/ as sysdba\' DIRECTORY=export DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=DIT_APPL.log SCHEMAS=DIT_APPL EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+
+
+
+(догрузил джобы, это нужно первым скриптом)
+impdp \'/ as sysdba\' DIRECTORY=export content=METADATA_ONLY DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=user_role_grant_job.log INCLUDE=USER,ROLE,GRANT,SYSTEM_GRANT,PROC_SYSTEM_GRANT,ROLE_GRANT,DEFAULT_ROLE,TABLESPACE_QUOTA,DB_LINK,SYNONYM,JOB REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+impdp \'/ as sysdba\' DIRECTORY=export DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=SIP_W_refresh_group.log SCHEMAS=SIP_W INCLUDE=REFRESH_GROUP REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+а если попробовать метеданные Eclude tables?? нет
+impdp \'/ as sysdba\' DIRECTORY=export content=METADATA_ONLY DUMPFILE=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp LOGFILE=meta_ex_table.log EXCLUDE=TABLE REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP parallel=4
+
+------------
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_W1.log SCHEMAS=SIP_W1 EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_W2.log SCHEMAS=SIP_W2 EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_VIEW.log SCHEMAS=SIP_VIEW EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=REP_CHR.log SCHEMAS=REP_CHR EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=JANUARY.log SCHEMAS=JANUARY EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=DIT_APPL.log SCHEMAS=DIT_APPL EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_ENAZA.log SCHEMAS=SIP_ENAZA EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_ADD.log SCHEMAS=SIP_ADD EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_CNTT.log SCHEMAS=SIP_CNTT EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=MIS_RO.log SCHEMAS=MIS_RO EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=DIT.log SCHEMAS=DIT EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_LDR10.log SCHEMAS=SIP_LDR10 EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_MIGR.log SCHEMAS=SIP_MIGR EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_NAUMEN.log SCHEMAS=SIP_NAUMEN EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=CH_WEB.log SCHEMAS=CH_WEB EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIPTMP.log SCHEMAS=SIPTMP EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=VTMIS.log SCHEMAS=VTMIS EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=SIP_MIAS.log SCHEMAS=SIP_MIAS EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+impdp \'/ as sysdba\' directory=export dumpfile=full0_%U.dmp,full1_%U.dmp,full2_%U.dmp,full3_%U.dmp logfile=STA.log SCHEMAS=STA EXCLUDE=STATISTICS REMAP_TABLESPACE=USERS1:USERS REMAP_TABLESPACE=TEMPSIP:TEMP REMAP_TABLESPACE=TEMPSIP2:TEMP PARALLEL=4
+
+SIP_ADD
+REP_CHR
+SIP_NAUMEN
+SIP_VIEW
+
+
+
+
+
+create or replace TYPE             "TQVCHARGE"                                                                          AS OBJECT
+(
+  CD_N number,
+  C_N number,
+  LogN number);
+он живёт в другой схеме - sip_types
+при следующем экспорте включу и её
+и типов там немало :-\
+не забыть про sip_www - веб-кабинет 
+
+
+CREATE DATABASE LINK "START_APPL"
+  CONNECT TO "CH_APPL" IDENTIFIED BY VALUES '059E7E690E2877779F236EE920463C842F64A38FAE20C3B2CC'
+  USING '(DESCRIPTION =
+   (ADDRESS_LIST =
+     (ADDRESS = (PROTOCOL = TCP)(HOST = start-ch.mrk.vt.ru)(PORT = 1521)) )
+   (CONNECT_DATA =
+     (SERVICE_NAME = WCH)
+   ) )';

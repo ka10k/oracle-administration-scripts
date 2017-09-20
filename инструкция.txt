@@ -1,0 +1,138 @@
+﻿openssl s_client -connect xdsl.mts-nn.ru:443 -key our_private_key.pem -showcerts -cert our_server-signed_cert.pem
+
+
+Настройка защищенного подключения по UTL_HTTP к https://10.184.55.8:8443 
+
+1. получено два файла 
+Client_Volga.crt - клиентский сертификат
+Client_Volga.key - файл с ключем
+cd /ora/11gR2/owm/wallet/oracle
+кладем в /ora/11gR2/owm/wallet/oracle
+
+2. получим файл серверного сертификата
+echo "GET /" | openssl s_client -cert Client_Volga.crt -key Client_Volga.key -host 10.184.55.8 -port 8443 > server.txt
+вырезаем из server.txt сертификат
+-----BEGIN CERTIFICATE-----
+MIIDdDCCAlwCCQC5Xz6Jm1CuijANBgkqhkiG9w0BAQUFADB8MQswCQYDVQQGEwJS
+VTENMAsGA1UECBMEUGVybTENMAsGA1UEBxMEUGVybTETMBEGA1UEChMKSlNDIERh
+.........
+-----END CERTIFICATE-----
+и вставляем в server.crt
+
+3. формируем wallet
+cd /ora/11gR2/owm/wallet/oracle
+openssl pkcs12 -export -in Client_Volga.crt -inkey Client_Volga.key  -out ewallet.p12  -certfile server.crt -chain -CAfile server.crt
+
+создаем wallet
+cd /ora/11gR2/owm/wallet/oracle
+create -wallet /ora/11gR2/owm/wallet/oracle -auto_login -pwd VolgaPass12
+
+4. Проверяем
+orapki wallet display -wallet /home/oracle/perm -pwd VolgaPass12
+получим что то типа
+Oracle PKI Tool : Version 11.2.0.3.0 - Production
+Copyright (c) 2004, 2011, Oracle and/or its affiliates. All rights reserved.
+
+Requested Certificates: 
+User Certificates:
+Subject:        CN=merchant-server,O=JSC DartIt,L=Perm,ST=Perm,C=RU
+Trusted Certificates: 
+Subject:        EmailAddress=support@dartit.ru,CN=merchant-server,O=JSC DartIt,L=Perm,ST=Perm,C=RU
+Subject:        EmailAddress=support@dartit.ru,CN=merchant-server,O=JSC DartIt,L=Perm,ST=Perm,C=RU
+
+проверяем
+sqlplus "/ as sysdba"
+
+set serveroutput on
+
+DECLARE
+   req        UTL_HTTP.REQ;
+   resp       UTL_HTTP.RESP;
+   walletdir  VARCHAR2 ( 100 ) := 'file:/ora/11gR2/owm/wallets/oracle';
+   walletpass VARCHAR2 ( 100 ) := 'VolgaPass12';
+   targeturl  VARCHAR2 ( 100 ) := 'https://10.184.55.8:8443';
+   BEGIN
+   UTL_HTTP.SET_WALLET               ( walletdir, walletpass );
+   req  := UTL_HTTP.BEGIN_REQUEST    ( targeturl );
+   resp := UTL_HTTP.GET_RESPONSE     ( req );
+   UTL_HTTP.END_RESPONSE        ( resp );
+   DBMS_OUTPUT.PUT_LINE ( 'HTTP response status code: ' || resp.status_code ); DBMS_OUTPUT.PUT_LINE ( 'HTTP response reason: ' || resp.reason_phrase);
+END;
+/
+
+HTTP response status code: 200
+HTTP response reason: OK
+
+PL/SQL procedure successfully completed.
+
+работает.
+
+или
+
+exec UTL_HTTP.SET_WALLET( 'file:/ora/11gR2/owm/wallets/oracle', 'VolgaPass12');
+PL/SQL procedure successfully completed.
+
+select utl_http.request('https://10.184.55.8:8443') from dual;
+получим html код в ответ
+
+5. Настройка доступа для других пользователей ACL
+
+Создаем ACL
+
+begin
+  dbms_network_acl_admin.create_acl (
+    acl         => 'elk_http.xml',
+    description => 'HTTP Access',
+    principal   => 'SR',
+    is_grant    => TRUE,
+    privilege   => 'connect',
+    start_date  => null,
+    end_date    => null
+  );
+
+dbms_network_acl_admin.assign_acl (
+    acl        => 'elk_http.xml',
+    host       => '10.184.55.8',
+    lower_port => 8443,
+    upper_port => 8443
+  );
+  commit;
+end;
+/
+
+привязываем wallet
+
+Begin
+DBMS_NETWORK_ACL_ADMIN.ASSIGN_WALLET_ACL(
+    acl         => 'elk_http.xml', 
+    wallet_path => 'file:/ora/11gR2/owm/wallets/oracle');
+commit;
+end;
+/
+
+добавляем клиентский сертификат только так
+
+exec DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE('elk_http.xml','SR',true, 'use-client-certificates');
+
+пользователь SR готов
+
+еще одному пользователю
+
+begin
+DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE(
+    acl         => 'elk_http.xml', 
+    principal   => 'DIT_APPL',
+    is_grant    => TRUE,
+    privilege   => 'connect');
+commit;
+end;
+/  
+
+exec DBMS_NETWORK_ACL_ADMIN.ADD_PRIVILEGE('elk_http.xml','DIT_APPL',true, 'use-client-certificates');
+
+пользователь DIT_APPL готов
+
+проверка как выше в п.4
+
+
+

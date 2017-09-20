@@ -1,0 +1,15 @@
+rman target sys/qwaszx12@SIPSR catalog rman112/rman@rcat
+
+
+run
+{
+allocate channel ch100 type SBT_TAPE;
+allocate channel ch101 type SBT_TAPE;
+allocate channel ch102 type SBT_TAPE;
+allocate channel ch103 type SBT_TAPE;
+allocate channel ch104 type SBT_TAPE;
+allocate channel ch105 type SBT_TAPE;
+allocate channel ch106 type SBT_TAPE;
+allocate channel ch107 type SBT_TAPE;
+restore archivelog from sequence 156975 until sequence 156976;
+}
